@@ -1,0 +1,4 @@
+app:
+  name: optipie-user-management-api
+  environment: staging
+  timeout: 2000 #ms

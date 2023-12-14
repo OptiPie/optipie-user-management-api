@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option go_package = "github.com/OptiPie/usermanagementapi";
+
+message CreateUserRequest {
+    string type = 1;
+    string live_mode = 2;
+    message Data {
+        int64 id = 1;
+        int32 amount = 2;
+        string object = 3;
+        string supporter_email = 4;
+    }
+}
