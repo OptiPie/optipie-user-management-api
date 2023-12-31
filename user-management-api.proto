@@ -2,13 +2,37 @@ syntax = "proto3";
 
 option go_package = "github.com/OptiPie/usermanagementapi";
 
-message CreateUserRequest {
+message CreateMembershipRequest {
     string type = 1;
-    string live_mode = 2;
+    bool live_mode = 2;
+    int32 attempt = 3;
+    int64 created = 4;
+    int64 event_id = 5;
+    Data data = 6;
+
     message Data {
         int64 id = 1;
-        int32 amount = 2;
+        double amount = 2;
         string object = 3;
-        string supporter_email = 4;
+        string paused = 4;
+        string status = 5;
+        string canceled = 6;
+        string currency = 7;
+        string psp_id = 8;
+        string membership_level_id = 9;
+        string membership_level_name = 10;
+        int64 started_at = 11;
+        int64 canceled_at = 12;
+        bool note_hidden = 13;
+        string support_note = 14;
+        string supporter_name = 15;
+        int64 supporter_id = 16;
+        string supporter_email = 17;
+        int64 current_period_end = 18;
+        int64 current_period_start = 19;
     }
+}
+
+message CreateMembershipResponse{
+    int32 status_code = 1;
 }

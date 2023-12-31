@@ -1,4 +1,4 @@
-package handler
+package usermanagementapi
 
 import (
 	"net/http"
