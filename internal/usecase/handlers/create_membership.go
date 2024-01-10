@@ -13,9 +13,8 @@ type CreateMembershipHandler interface {
 }
 
 type NewCreateMembershipArgs struct {
-	Logger  *slog.Logger
-	Config  *config.Config
-	AppName string
+	Logger *slog.Logger
+	Config *config.Config
 }
 
 func NewCreateMembership(args NewCreateMembershipArgs) (*CreateMembership, error) {
@@ -25,21 +24,16 @@ func NewCreateMembership(args NewCreateMembershipArgs) (*CreateMembership, error
 	if args.Logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
-	if args.AppName == "" {
-		return nil, fmt.Errorf("appName is required")
-	}
 	return &CreateMembership{
-		logger:  args.Logger,
-		config:  args.Config,
-		appName: args.AppName,
+		logger: args.Logger,
+		config: args.Config,
 	}, nil
 }
 
 // CreateMembership is a request handler with all dependencies initialized.
 type CreateMembership struct {
-	logger  *slog.Logger
-	config  *config.Config
-	appName string
+	logger *slog.Logger
+	config *config.Config
 }
 
 // CreateMemberShipRequest represents necessary POST /api/v1/user/membership request data for handler.
