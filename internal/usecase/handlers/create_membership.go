@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
+	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"log/slog"
 )
 
@@ -13,8 +14,9 @@ type CreateMembershipHandler interface {
 }
 
 type NewCreateMembershipArgs struct {
-	Logger *slog.Logger
-	Config *config.Config
+	Logger     *slog.Logger
+	Config     *config.Config
+	Repository domain.Repository
 }
 
 func NewCreateMembership(args NewCreateMembershipArgs) (*CreateMembership, error) {
@@ -25,15 +27,17 @@ func NewCreateMembership(args NewCreateMembershipArgs) (*CreateMembership, error
 		return nil, fmt.Errorf("logger is required")
 	}
 	return &CreateMembership{
-		logger: args.Logger,
-		config: args.Config,
+		logger:     args.Logger,
+		config:     args.Config,
+		repository: args.Repository,
 	}, nil
 }
 
 // CreateMembership is a request handler with all dependencies initialized.
 type CreateMembership struct {
-	logger *slog.Logger
-	config *config.Config
+	logger     *slog.Logger
+	config     *config.Config
+	repository domain.Repository
 }
 
 // CreateMemberShipRequest represents necessary POST /api/v1/user/membership request data for handler.
@@ -69,9 +73,38 @@ type CreateMemberShipResponse struct {
 
 func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemberShipRequest) error {
 	logger := h.logger
+	repository := h.repository
 	logger.Info("Here is the request at handler level", request)
-
 	// add dynamodb logic here.
+	err := repository.CreateMembership(ctx, domain.CreateMembershipArgs{
+		Type:                "test",
+		LiveMode:            false,
+		Attempt:             0,
+		Created:             0,
+		EventId:             0,
+		Id:                  0,
+		Amount:              0,
+		Object:              "",
+		Paused:              "",
+		Status:              "",
+		Canceled:            "",
+		Currency:            "",
+		PspId:               "",
+		MembershipLevelId:   "",
+		MembershipLevelName: "",
+		StartedAt:           0,
+		CanceledAt:          0,
+		NoteHidden:          false,
+		SupportNote:         "",
+		SupporterName:       "",
+		SupporterId:         0,
+		SupporterEmail:      request.SupporterEmail,
+		CurrentPeriodEnd:    0,
+		CurrentPeriodStart:  0,
+	})
+	if err != nil {
+		logger.Error("error on repository: %v", err)
+	}
 
 	return nil
 }

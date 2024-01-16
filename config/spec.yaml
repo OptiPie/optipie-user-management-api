@@ -1,4 +1,5 @@
 app:
   name: optipie-user-management-api
   environment: staging
+  is_local_development: true
   timeout: 2000 #ms

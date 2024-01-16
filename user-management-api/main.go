@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/app/prepare"
 	usermanagementapi "github.com/OptiPie/optipie-user-management-api/internal/app/user-management-api"
+	dynamorepo "github.com/OptiPie/optipie-user-management-api/internal/infra/dynamodb"
 	"github.com/OptiPie/optipie-user-management-api/internal/usecase/handlers"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"log"
@@ -19,7 +22,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("error on GetConfig, %v", err)
 	}
-
+	ctx := context.Background()
 	// init chi router
 	r := chi.NewRouter()
 
@@ -29,6 +32,20 @@ func main() {
 		log.Fatalf("error on preparing middlewares %v", err)
 	}
 
+	var awsCfg aws.Config
+	if appConfig.App.IsLocalDevelopment {
+		awsCfg, err = prepare.LocalAwsConfig(ctx)
+	} else {
+		awsCfg, err = prepare.AwsConfig(ctx)
+	}
+
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	svc := prepare.Dynamodb(awsCfg)
+	repository := dynamorepo.NewRepository(svc)
+
 	// middlewares
 	r.Use(middleware.RequestID)
 	r.Use(middleware.Logger)
@@ -37,8 +54,9 @@ func main() {
 
 	// construct handlers
 	handlerCreateMembership, err := handlers.NewCreateMembership(handlers.NewCreateMembershipArgs{
-		Logger: logger,
-		Config: appConfig,
+		Logger:     logger,
+		Config:     appConfig,
+		Repository: repository,
 	})
 
 	if err != nil {

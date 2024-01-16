@@ -17,9 +17,10 @@ const (
 
 type Config struct {
 	App struct {
-		Name        string `mapstructure:"name" validate:"required"`
-		Environment string `mapstructure:"environment" validate:"required"`
-		Timeout     int    `mapstructure:"timeout" validate:"required"`
+		Name               string `mapstructure:"name" validate:"required"`
+		Environment        string `mapstructure:"environment" validate:"required"`
+		Timeout            int    `mapstructure:"timeout" validate:"required"`
+		IsLocalDevelopment bool   `mapstructure:"is_local_development" validate:"required"`
 	} `mapstructure:"app" validate:"required"`
 }
 
