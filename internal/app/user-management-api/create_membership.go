@@ -20,7 +20,7 @@ func (i *Implementation) CreateMembership(w http.ResponseWriter, r *http.Request
 	request := &apprequest.CreateMembershipRequest{}
 
 	if err := render.Bind(r, request); err != nil {
-		logger.Error("Error, ", err)
+		logger.Error("Error, %v", err)
 		response.StatusCode = http.StatusBadRequest
 		render.Render(w, r, response)
 		return

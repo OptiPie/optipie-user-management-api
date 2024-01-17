@@ -2,13 +2,20 @@ package dynamorepo
 
 import (
 	"context"
+	"fmt"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain/models"
 	dbmodels "github.com/OptiPie/optipie-user-management-api/internal/infra/dynamodb/models"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	"log"
+)
+
+const (
+	primaryKey = "email"
+
+	// dynamodb condition expressions
+	attributeNotExists = "attribute_not_exists"
 )
 
 type Client struct {
@@ -51,14 +58,16 @@ func (c Client) CreateMembership(ctx context.Context, args domain.CreateMembersh
 
 	item, err := attributevalue.MarshalMap(membership)
 	if err != nil {
-		return err
+		return fmt.Errorf("marshall error: %v", err)
 	}
+	conditionExpression := fmt.Sprintf("%v(%v)", attributeNotExists, primaryKey)
+
 	_, err = c.client.PutItem(ctx, &dynamodb.PutItemInput{
 		TableName: aws.String("test"), Item: item,
+		ConditionExpression: aws.String(conditionExpression),
 	})
-
 	if err != nil {
-		log.Printf("Couldn't add item to table. Here's why: %v\n", err)
+		return fmt.Errorf("put item error: %v", err)
 	}
 
 	return nil

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
@@ -74,36 +75,44 @@ type CreateMemberShipResponse struct {
 func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemberShipRequest) error {
 	logger := h.logger
 	repository := h.repository
-	logger.Info("Here is the request at handler level", request)
-	// add dynamodb logic here.
+	errorResponse := errors.New("")
+
+	logger.Info("request at handler level", "request", request)
+
+	if request.SupporterEmail == "" {
+		logger.Error("supporter email can't be nil", "request", request)
+		return errorResponse
+	}
+
 	err := repository.CreateMembership(ctx, domain.CreateMembershipArgs{
-		Type:                "test",
-		LiveMode:            false,
-		Attempt:             0,
-		Created:             0,
-		EventId:             0,
-		Id:                  0,
-		Amount:              0,
-		Object:              "",
-		Paused:              "",
-		Status:              "",
-		Canceled:            "",
-		Currency:            "",
-		PspId:               "",
-		MembershipLevelId:   "",
-		MembershipLevelName: "",
-		StartedAt:           0,
-		CanceledAt:          0,
-		NoteHidden:          false,
-		SupportNote:         "",
-		SupporterName:       "",
-		SupporterId:         0,
+		Type:                request.Type,
+		LiveMode:            request.LiveMode,
+		Attempt:             request.Attempt,
+		Created:             request.Created,
+		EventId:             request.EventId,
+		Id:                  request.Id,
+		Amount:              request.Amount,
+		Object:              request.Object,
+		Paused:              request.Paused,
+		Status:              request.Status,
+		Canceled:            request.Canceled,
+		Currency:            request.Currency,
+		PspId:               request.PspId,
+		MembershipLevelId:   request.MembershipLevelId,
+		MembershipLevelName: request.MembershipLevelName,
+		StartedAt:           request.StartedAt,
+		CanceledAt:          request.CanceledAt,
+		NoteHidden:          request.NoteHidden,
+		SupportNote:         request.SupportNote,
+		SupporterName:       request.SupporterName,
+		SupporterId:         request.SupporterId,
 		SupporterEmail:      request.SupporterEmail,
-		CurrentPeriodEnd:    0,
-		CurrentPeriodStart:  0,
+		CurrentPeriodEnd:    request.CurrentPeriodEnd,
+		CurrentPeriodStart:  request.CurrentPeriodStart,
 	})
 	if err != nil {
-		logger.Error("error on repository: %v", err)
+		logger.Error("error on repository.create_membership", "request", request, "err", err)
+		return errorResponse
 	}
 
 	return nil
