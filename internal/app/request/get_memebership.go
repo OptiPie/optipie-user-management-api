@@ -5,10 +5,10 @@ import (
 	"net/http"
 )
 
-type CreateMembershipRequest struct {
-	*desc.CreateMembershipRequest
+type GetMembershipRequest struct {
+	*desc.GetMembershipRequest
 }
 
-func (req CreateMembershipRequest) Bind(r *http.Request) error {
+func (req GetMembershipRequest) Bind(r *http.Request) error {
 	return nil
 }

@@ -12,10 +12,13 @@ import (
 )
 
 const (
-	primaryKey = "email"
+	membershipPrimaryKey = "email"
 
 	// dynamodb condition expressions
 	attributeNotExists = "attribute_not_exists"
+
+	// table names
+	tableNameMembership = "membership"
 )
 
 type Client struct {
@@ -60,10 +63,10 @@ func (c Client) CreateMembership(ctx context.Context, args domain.CreateMembersh
 	if err != nil {
 		return fmt.Errorf("marshall error: %v", err)
 	}
-	conditionExpression := fmt.Sprintf("%v(%v)", attributeNotExists, primaryKey)
+	conditionExpression := fmt.Sprintf("%v(%v)", attributeNotExists, membershipPrimaryKey)
 
 	_, err = c.client.PutItem(ctx, &dynamodb.PutItemInput{
-		TableName: aws.String("test"), Item: item,
+		TableName: aws.String(tableNameMembership), Item: item,
 		ConditionExpression: aws.String(conditionExpression),
 	})
 	if err != nil {
@@ -74,6 +77,48 @@ func (c Client) CreateMembership(ctx context.Context, args domain.CreateMembersh
 }
 
 func (c Client) GetMembershipByEmail(ctx context.Context, email string) (models.Membership, error) {
-	//TODO implement me
-	panic("implement me")
+	membership := dbmodels.Membership{Email: email}
+	membershipPk, err := membership.GetPrimaryKey()
+	if err != nil {
+		return models.Membership{}, fmt.Errorf("membership get primary key error: %v", err)
+	}
+	response, err := c.client.GetItem(ctx, &dynamodb.GetItemInput{
+		Key: membershipPk, TableName: aws.String("test"),
+	})
+
+	if err != nil {
+		return models.Membership{}, fmt.Errorf("get membership by email error: %v", err)
+	}
+
+	err = attributevalue.UnmarshalMap(response.Item, &membership)
+	if err != nil {
+		return models.Membership{}, fmt.Errorf("get membership by email unmarshal error: %v", err)
+	}
+
+	return models.Membership{
+		Type:                membership.Type,
+		LiveMode:            membership.LiveMode,
+		Attempt:             membership.Attempt,
+		Created:             membership.Created,
+		EventId:             membership.EventId,
+		Id:                  membership.Id,
+		Amount:              membership.Amount,
+		Object:              membership.Object,
+		Paused:              membership.Paused,
+		Status:              membership.Status,
+		Canceled:            membership.Canceled,
+		Currency:            membership.Currency,
+		PspId:               membership.PspId,
+		MembershipLevelId:   membership.MembershipLevelId,
+		MembershipLevelName: membership.MembershipLevelName,
+		StartedAt:           membership.StartedAt,
+		CanceledAt:          membership.CanceledAt,
+		NoteHidden:          membership.NoteHidden,
+		SupportNote:         membership.SupportNote,
+		SupporterName:       membership.SupporterName,
+		SupporterId:         membership.SupporterId,
+		SupporterEmail:      membership.Email,
+		CurrentPeriodEnd:    membership.CurrentPeriodEnd,
+		CurrentPeriodStart:  membership.CurrentPeriodStart,
+	}, nil
 }

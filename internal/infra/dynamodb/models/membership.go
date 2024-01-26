@@ -1,5 +1,10 @@
 package dbmodels
 
+import (
+	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+)
+
 type Membership struct {
 	Email               string  `dynamodbav:"email"`
 	Type                string  `dynamodbav:"type"`
@@ -25,4 +30,13 @@ type Membership struct {
 	SupporterId         int64   `dynamodbav:"supporter_id"`
 	CurrentPeriodEnd    int64   `dynamodbav:"current_period_end"`
 	CurrentPeriodStart  int64   `dynamodbav:"current_period_start"`
+}
+
+func (m Membership) GetPrimaryKey() (map[string]types.AttributeValue, error) {
+	email, err := attributevalue.Marshal(m.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	return map[string]types.AttributeValue{"email": email}, nil
 }

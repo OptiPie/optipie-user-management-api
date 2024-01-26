@@ -34,13 +34,14 @@ func main() {
 
 	var awsCfg aws.Config
 	if appConfig.App.IsLocalDevelopment {
+		logger.Warn("Warning, local development environment!")
 		awsCfg, err = prepare.LocalAwsConfig(ctx)
 	} else {
 		awsCfg, err = prepare.AwsConfig(ctx)
 	}
 
 	if err != nil {
-		log.Fatalf("%v", err)
+		log.Fatalf("prepare aws config error: %v", err)
 	}
 
 	svc := prepare.Dynamodb(awsCfg)
@@ -58,9 +59,18 @@ func main() {
 		Config:     appConfig,
 		Repository: repository,
 	})
-
 	if err != nil {
 		log.Fatalf("error on NewCreateMembership, %v", err)
+	}
+
+	handlerGetMembership, err := handlers.NewGetMembership(handlers.NewGetMembershipArgs{
+		Logger:     logger,
+		Config:     appConfig,
+		Repository: repository,
+	})
+
+	if err != nil {
+		log.Fatalf("error on NewGetMembership, %v", err)
 	}
 
 	implementation, err := usermanagementapi.NewUserManagementAPI(
@@ -68,6 +78,7 @@ func main() {
 			Logger:                  logger,
 			Config:                  appConfig,
 			CreateMembershipHandler: handlerCreateMembership,
+			GetMembershipHandler:    handlerGetMembership,
 		})
 
 	// API routes
@@ -78,9 +89,16 @@ func main() {
 			for _, mw := range middlewares {
 				r.Use(mw)
 			}
-			r.Post("/user/membership", implementation.CreateMembership)
-		})
+			r.Route("/user/membership", func(r chi.Router) {
+				r.Post("/create", implementation.CreateMembership)
+				r.Post("/update", nil)
+				r.Post("/delete", nil)
+				r.Route("/{email}", func(r chi.Router) {
+					r.Get("/", implementation.GetMembership)
+				})
+			})
 
+		})
 	})
 
 	log.Fatal(http.ListenAndServe(":3000", r))

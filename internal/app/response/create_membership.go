@@ -11,7 +11,7 @@ type CreateMembershipResponse struct {
 	*desc.CreateMembershipResponse
 }
 
-func (e *CreateMembershipResponse) Render(w http.ResponseWriter, r *http.Request) error {
-	render.Status(r, int(e.StatusCode))
+func (resp *CreateMembershipResponse) Render(w http.ResponseWriter, r *http.Request) error {
+	render.Status(r, int(resp.StatusCode))
 	return nil
 }

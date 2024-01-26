@@ -1,0 +1,49 @@
+package usermanagementapi
+
+import (
+	appresponse "github.com/OptiPie/optipie-user-management-api/internal/app/response"
+	"github.com/OptiPie/optipie-user-management-api/internal/usecase/handlers"
+	desc "github.com/OptiPie/optipie-user-management-api/pkg/user-management-api"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/render"
+	"net/http"
+)
+
+func (i *Implementation) GetMembership(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	logger := i.logger
+	response := &appresponse.GetMembershipResponse{
+		GetMembershipResponse: new(desc.GetMembershipResponse),
+	}
+
+	var email string
+
+	if email = chi.URLParam(r, "email"); email == "" {
+		logger.Error("email can't be empty")
+		response.StatusCode = http.StatusBadRequest
+		render.Render(w, r, response)
+		return
+	}
+
+	membershipResponse, err := i.getMembershipHandler.HandleRequest(ctx, handlers.GetMembershipRequest{
+		Email: email,
+	})
+
+	if err != nil {
+		response.StatusCode = http.StatusInternalServerError
+		render.Render(w, r, response)
+		return
+	}
+
+	responseData := &desc.GetMembershipResponse_Data{
+		Email:              &membershipResponse.Email,
+		IsMembershipExists: &membershipResponse.IsMembershipExists,
+		IsMembershipActive: &membershipResponse.IsMembershipActive,
+		Paused:             membershipResponse.Paused,
+		Canceled:           membershipResponse.Canceled,
+	}
+
+	response.Data = responseData
+	response.StatusCode = http.StatusOK
+	render.Render(w, r, response)
+}

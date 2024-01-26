@@ -9,8 +9,8 @@ import (
 	"net/http"
 )
 
-// CreateMembership handles /api/v1/user/membership/create endpoint.
-func (i *Implementation) CreateMembership(w http.ResponseWriter, r *http.Request) {
+// UpdateMembership handles /api/v1/user/membership/update endpoint.
+func (i *Implementation) UpdateMembership(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	logger := i.logger
 	response := &appresponse.CreateMembershipResponse{

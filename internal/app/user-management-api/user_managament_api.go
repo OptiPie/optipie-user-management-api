@@ -11,6 +11,7 @@ type Implementation struct {
 	logger                  *slog.Logger
 	config                  *config.Config
 	createMembershipHandler handlers.CreateMembershipHandler
+	getMembershipHandler    handlers.GetMembershipHandler
 }
 
 func NewUserManagementAPI(args NewUserManagementAPIArgs) (*Implementation, error) {
@@ -27,6 +28,7 @@ func NewUserManagementAPI(args NewUserManagementAPIArgs) (*Implementation, error
 		logger:                  args.Logger,
 		config:                  args.Config,
 		createMembershipHandler: args.CreateMembershipHandler,
+		getMembershipHandler:    args.GetMembershipHandler,
 	}, nil
 }
 
@@ -34,4 +36,5 @@ type NewUserManagementAPIArgs struct {
 	Logger                  *slog.Logger
 	Config                  *config.Config
 	CreateMembershipHandler handlers.CreateMembershipHandler
+	GetMembershipHandler    handlers.GetMembershipHandler
 }

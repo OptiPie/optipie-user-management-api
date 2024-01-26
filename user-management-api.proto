@@ -36,3 +36,20 @@ message CreateMembershipRequest {
 message CreateMembershipResponse{
     int32 status_code = 1;
 }
+
+message GetMembershipRequest{
+    string email = 1;
+}
+
+message GetMembershipResponse{
+    int32 status_code = 1;
+    Data data = 2;
+
+    message Data {
+        optional string email = 1;
+        optional bool is_membership_exists = 2;
+        optional bool is_membership_active = 3;
+        optional bool paused = 4;
+        optional bool canceled = 5;
+    }
+}

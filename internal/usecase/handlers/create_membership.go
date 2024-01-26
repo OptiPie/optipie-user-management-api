@@ -69,20 +69,12 @@ type CreateMemberShipRequest struct {
 	CurrentPeriodStart  int64
 }
 
-type CreateMemberShipResponse struct {
-}
-
 func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemberShipRequest) error {
 	logger := h.logger
 	repository := h.repository
 	errorResponse := errors.New("")
 
 	logger.Info("request at handler level", "request", request)
-
-	if request.SupporterEmail == "" {
-		logger.Error("supporter email can't be nil", "request", request)
-		return errorResponse
-	}
 
 	err := repository.CreateMembership(ctx, domain.CreateMembershipArgs{
 		Type:                request.Type,
