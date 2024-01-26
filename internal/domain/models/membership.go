@@ -1,10 +1,13 @@
 package models
 
+import "time"
+
 type Membership struct {
 	Type                string
 	LiveMode            bool
 	Attempt             int32
-	Created             int64
+	Created             time.Time
+	Updated             time.Time
 	EventId             int64
 	Id                  int64
 	Amount              float64
@@ -16,13 +19,15 @@ type Membership struct {
 	PspId               string
 	MembershipLevelId   string
 	MembershipLevelName string
-	StartedAt           int64
-	CanceledAt          int64
+	StartedAt           time.Time
+	CanceledAt          time.Time
 	NoteHidden          bool
 	SupportNote         string
 	SupporterName       string
 	SupporterId         int64
 	SupporterEmail      string
-	CurrentPeriodEnd    int64
-	CurrentPeriodStart  int64
+	CurrentPeriodEnd    time.Time
+	SupporterFeedback   string
+	CancelAtPeriodEnd   string
+	CurrentPeriodStart  time.Time
 }

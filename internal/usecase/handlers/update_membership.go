@@ -7,51 +7,42 @@ import (
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"log/slog"
-	"time"
 )
 
-// CreateMembershipHandler is an abstraction for MemberShipStarted use-case handler.
-type CreateMembershipHandler interface {
-	HandleRequest(ctx context.Context, request CreateMemberShipRequest) error
+// UpdateMembershipHandler is an abstraction for MemberShipUpdated use-case handler.
+type UpdateMembershipHandler interface {
+	HandleRequest(ctx context.Context, request UpdateMembershipRequest) error
 }
 
-type NewCreateMembershipArgs struct {
+type NewUpdateMembershipArgs struct {
 	Logger     *slog.Logger
 	Config     *config.Config
 	Repository domain.Repository
 }
 
-func NewCreateMembership(args NewCreateMembershipArgs) (*CreateMembership, error) {
+func NewUpdateMembership(args NewUpdateMembershipArgs) (*UpdateMembership, error) {
 	if args.Config == nil {
 		return nil, fmt.Errorf("config is required")
 	}
 	if args.Logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
-	return &CreateMembership{
+	return &UpdateMembership{
 		logger:     args.Logger,
 		config:     args.Config,
 		repository: args.Repository,
 	}, nil
 }
 
-// CreateMembership is a request handler with all dependencies initialized.
-type CreateMembership struct {
+// UpdateMembership is a request handler with all dependencies initialized.
+type UpdateMembership struct {
 	logger     *slog.Logger
 	config     *config.Config
 	repository domain.Repository
 }
 
-// CreateMemberShipRequest represents necessary POST /api/v1/user/membership request data for handler.
-type CreateMemberShipRequest struct {
-	Type                string
-	LiveMode            bool
-	Attempt             int32
-	Created             int64
-	EventId             int64
-	Id                  int64
-	Amount              float64
-	Object              string
+// UpdateMembershipRequest represents necessary POST /api/v1/user/membership/update request data for handler.
+type UpdateMembershipRequest struct {
 	Paused              string
 	Status              string
 	Canceled            string
@@ -64,28 +55,21 @@ type CreateMemberShipRequest struct {
 	NoteHidden          bool
 	SupportNote         string
 	SupporterName       string
-	SupporterId         int64
 	SupporterEmail      string
 	CurrentPeriodEnd    int64
+	SupporterFeedback   string
+	CancelAtPeriodEnd   string
 	CurrentPeriodStart  int64
 }
 
-func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemberShipRequest) error {
+func (h *UpdateMembership) HandleRequest(ctx context.Context, request UpdateMembershipRequest) error {
 	logger := h.logger
 	repository := h.repository
 	errorResponse := errors.New("")
 
 	logger.Info("request at handler level", "request", request)
 
-	err := repository.CreateMembership(ctx, domain.CreateMembershipArgs{
-		Type:                request.Type,
-		LiveMode:            request.LiveMode,
-		Attempt:             request.Attempt,
-		Created:             convertUnixToUTCTime(request.Created),
-		EventId:             request.EventId,
-		Id:                  request.Id,
-		Amount:              request.Amount,
-		Object:              request.Object,
+	err := repository.UpdateMembershipByEmail(ctx, request.SupporterEmail, domain.UpdateMembershipArgs{
 		Paused:              request.Paused,
 		Status:              request.Status,
 		Canceled:            request.Canceled,
@@ -98,20 +82,15 @@ func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemb
 		NoteHidden:          request.NoteHidden,
 		SupportNote:         request.SupportNote,
 		SupporterName:       request.SupporterName,
-		SupporterId:         request.SupporterId,
-		SupporterEmail:      request.SupporterEmail,
 		CurrentPeriodEnd:    convertUnixToUTCTime(request.CurrentPeriodEnd),
+		SupporterFeedback:   request.SupporterFeedback,
+		CancelAtPeriodEnd:   request.CancelAtPeriodEnd,
 		CurrentPeriodStart:  convertUnixToUTCTime(request.CurrentPeriodStart),
 	})
 	if err != nil {
-		logger.Error("error on repository.create_membership", "request", request, "err", err)
+		logger.Error("error on repository.update_membership", "request", request, "err", err)
 		return errorResponse
 	}
 
 	return nil
-}
-
-func convertUnixToUTCTime(unixTime int64) time.Time {
-	t := time.Unix(unixTime, 0)
-	return t.UTC()
 }

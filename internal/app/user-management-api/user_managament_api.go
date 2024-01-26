@@ -12,6 +12,7 @@ type Implementation struct {
 	config                  *config.Config
 	createMembershipHandler handlers.CreateMembershipHandler
 	getMembershipHandler    handlers.GetMembershipHandler
+	updateMembershipHandler handlers.UpdateMembershipHandler
 }
 
 func NewUserManagementAPI(args NewUserManagementAPIArgs) (*Implementation, error) {
@@ -22,13 +23,20 @@ func NewUserManagementAPI(args NewUserManagementAPIArgs) (*Implementation, error
 		return nil, fmt.Errorf("logger is required")
 	}
 	if args.CreateMembershipHandler == nil {
-		return nil, fmt.Errorf("membershipStartedHandler is required")
+		return nil, fmt.Errorf("createMembershipHandler is required")
+	}
+	if args.GetMembershipHandler == nil {
+		return nil, fmt.Errorf("getMembershipHandler is required")
+	}
+	if args.UpdateMembershipHandler == nil {
+		return nil, fmt.Errorf("updateMembershipHandler is required")
 	}
 	return &Implementation{
 		logger:                  args.Logger,
 		config:                  args.Config,
 		createMembershipHandler: args.CreateMembershipHandler,
 		getMembershipHandler:    args.GetMembershipHandler,
+		updateMembershipHandler: args.UpdateMembershipHandler,
 	}, nil
 }
 
@@ -37,4 +45,5 @@ type NewUserManagementAPIArgs struct {
 	Config                  *config.Config
 	CreateMembershipHandler handlers.CreateMembershipHandler
 	GetMembershipHandler    handlers.GetMembershipHandler
+	UpdateMembershipHandler handlers.UpdateMembershipHandler
 }

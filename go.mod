@@ -6,8 +6,9 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.24.1
 	github.com/aws/aws-sdk-go-v2/config v1.26.3
 	github.com/aws/aws-sdk-go-v2/credentials v1.16.14
-	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.12.14
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.26.8
+	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.12.16
+	github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression v1.6.16
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.27.0
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/go-chi/render v1.0.3
 	github.com/spf13/viper v1.18.1

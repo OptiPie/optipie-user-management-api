@@ -85,7 +85,7 @@ func (h *GetMembership) HandleRequest(ctx context.Context, request GetMembership
 	canceled, _ := strconv.ParseBool(membership.Canceled)
 
 	// check if membership is valid
-	if time.Now().Unix() > membership.CurrentPeriodEnd || membership.Status != membershipStatusActive {
+	if time.Now().After(membership.CurrentPeriodEnd) || membership.Status != membershipStatusActive {
 		logger.Warn("membership is not active", "membership", membership)
 		return &GetMembershipResponse{
 			Email:              membership.SupporterEmail,

@@ -13,11 +13,11 @@ import (
 func (i *Implementation) UpdateMembership(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	logger := i.logger
-	response := &appresponse.CreateMembershipResponse{
-		CreateMembershipResponse: new(desc.CreateMembershipResponse),
+	response := &appresponse.UpdateMembershipResponse{
+		UpdateMembershipResponse: new(desc.UpdateMembershipResponse),
 	}
 
-	request := &apprequest.CreateMembershipRequest{}
+	request := &apprequest.UpdateMembershipRequest{}
 
 	if err := render.Bind(r, request); err != nil {
 		logger.Error("Error, %v", err)
@@ -36,15 +36,7 @@ func (i *Implementation) UpdateMembership(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	err := i.createMembershipHandler.HandleRequest(ctx, handlers.CreateMemberShipRequest{
-		Type:                request.GetType(),
-		LiveMode:            request.GetLiveMode(),
-		Attempt:             request.GetAttempt(),
-		Created:             request.GetCreated(),
-		EventId:             request.GetEventId(),
-		Id:                  data.GetId(),
-		Amount:              data.GetAmount(),
-		Object:              data.GetObject(),
+	err := i.updateMembershipHandler.HandleRequest(ctx, handlers.UpdateMembershipRequest{
 		Paused:              data.GetPaused(),
 		Status:              data.GetStatus(),
 		Canceled:            data.GetCanceled(),
@@ -57,9 +49,10 @@ func (i *Implementation) UpdateMembership(w http.ResponseWriter, r *http.Request
 		NoteHidden:          data.GetNoteHidden(),
 		SupportNote:         data.GetSupportNote(),
 		SupporterName:       data.GetSupporterName(),
-		SupporterId:         data.GetSupporterId(),
 		SupporterEmail:      data.GetSupporterEmail(),
 		CurrentPeriodEnd:    data.GetCurrentPeriodEnd(),
+		SupporterFeedback:   data.GetSupporterFeedback(),
+		CancelAtPeriodEnd:   data.GetCancelAtPeriodEnd(),
 		CurrentPeriodStart:  data.GetCurrentPeriodStart(),
 	})
 

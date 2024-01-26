@@ -256,6 +256,140 @@ func (x *GetMembershipResponse) GetData() *GetMembershipResponse_Data {
 	return nil
 }
 
+type UpdateMembershipRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Type     string                        `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+	LiveMode bool                          `protobuf:"varint,2,opt,name=live_mode,json=liveMode,proto3" json:"live_mode,omitempty"`
+	Attempt  int32                         `protobuf:"varint,3,opt,name=attempt,proto3" json:"attempt,omitempty"`
+	Created  int64                         `protobuf:"varint,4,opt,name=created,proto3" json:"created,omitempty"`
+	EventId  int64                         `protobuf:"varint,5,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	Data     *UpdateMembershipRequest_Data `protobuf:"bytes,6,opt,name=data,proto3" json:"data,omitempty"`
+}
+
+func (x *UpdateMembershipRequest) Reset() {
+	*x = UpdateMembershipRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_management_api_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateMembershipRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMembershipRequest) ProtoMessage() {}
+
+func (x *UpdateMembershipRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_management_api_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMembershipRequest.ProtoReflect.Descriptor instead.
+func (*UpdateMembershipRequest) Descriptor() ([]byte, []int) {
+	return file_user_management_api_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpdateMembershipRequest) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest) GetLiveMode() bool {
+	if x != nil {
+		return x.LiveMode
+	}
+	return false
+}
+
+func (x *UpdateMembershipRequest) GetAttempt() int32 {
+	if x != nil {
+		return x.Attempt
+	}
+	return 0
+}
+
+func (x *UpdateMembershipRequest) GetCreated() int64 {
+	if x != nil {
+		return x.Created
+	}
+	return 0
+}
+
+func (x *UpdateMembershipRequest) GetEventId() int64 {
+	if x != nil {
+		return x.EventId
+	}
+	return 0
+}
+
+func (x *UpdateMembershipRequest) GetData() *UpdateMembershipRequest_Data {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type UpdateMembershipResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	StatusCode int32 `protobuf:"varint,1,opt,name=status_code,json=statusCode,proto3" json:"status_code,omitempty"`
+}
+
+func (x *UpdateMembershipResponse) Reset() {
+	*x = UpdateMembershipResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_management_api_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateMembershipResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMembershipResponse) ProtoMessage() {}
+
+func (x *UpdateMembershipResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_management_api_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMembershipResponse.ProtoReflect.Descriptor instead.
+func (*UpdateMembershipResponse) Descriptor() ([]byte, []int) {
+	return file_user_management_api_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UpdateMembershipResponse) GetStatusCode() int32 {
+	if x != nil {
+		return x.StatusCode
+	}
+	return 0
+}
+
 type CreateMembershipRequest_Data struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -285,7 +419,7 @@ type CreateMembershipRequest_Data struct {
 func (x *CreateMembershipRequest_Data) Reset() {
 	*x = CreateMembershipRequest_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_user_management_api_proto_msgTypes[4]
+		mi := &file_user_management_api_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -298,7 +432,7 @@ func (x *CreateMembershipRequest_Data) String() string {
 func (*CreateMembershipRequest_Data) ProtoMessage() {}
 
 func (x *CreateMembershipRequest_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_user_management_api_proto_msgTypes[4]
+	mi := &file_user_management_api_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -462,7 +596,7 @@ type GetMembershipResponse_Data struct {
 func (x *GetMembershipResponse_Data) Reset() {
 	*x = GetMembershipResponse_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_user_management_api_proto_msgTypes[5]
+		mi := &file_user_management_api_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -475,7 +609,7 @@ func (x *GetMembershipResponse_Data) String() string {
 func (*GetMembershipResponse_Data) ProtoMessage() {}
 
 func (x *GetMembershipResponse_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_user_management_api_proto_msgTypes[5]
+	mi := &file_user_management_api_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -524,6 +658,213 @@ func (x *GetMembershipResponse_Data) GetCanceled() bool {
 		return *x.Canceled
 	}
 	return false
+}
+
+type UpdateMembershipRequest_Data struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id                  int64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Amount              float64 `protobuf:"fixed64,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	Object              string  `protobuf:"bytes,3,opt,name=object,proto3" json:"object,omitempty"`
+	Paused              string  `protobuf:"bytes,4,opt,name=paused,proto3" json:"paused,omitempty"`
+	Status              string  `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Canceled            string  `protobuf:"bytes,6,opt,name=canceled,proto3" json:"canceled,omitempty"`
+	Currency            string  `protobuf:"bytes,7,opt,name=currency,proto3" json:"currency,omitempty"`
+	PspId               string  `protobuf:"bytes,8,opt,name=psp_id,json=pspId,proto3" json:"psp_id,omitempty"`
+	MembershipLevelId   string  `protobuf:"bytes,9,opt,name=membership_level_id,json=membershipLevelId,proto3" json:"membership_level_id,omitempty"`
+	MembershipLevelName string  `protobuf:"bytes,10,opt,name=membership_level_name,json=membershipLevelName,proto3" json:"membership_level_name,omitempty"`
+	StartedAt           int64   `protobuf:"varint,11,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	CanceledAt          int64   `protobuf:"varint,12,opt,name=canceled_at,json=canceledAt,proto3" json:"canceled_at,omitempty"`
+	NoteHidden          bool    `protobuf:"varint,13,opt,name=note_hidden,json=noteHidden,proto3" json:"note_hidden,omitempty"`
+	SupportNote         string  `protobuf:"bytes,14,opt,name=support_note,json=supportNote,proto3" json:"support_note,omitempty"`
+	SupporterName       string  `protobuf:"bytes,15,opt,name=supporter_name,json=supporterName,proto3" json:"supporter_name,omitempty"`
+	SupporterId         int64   `protobuf:"varint,16,opt,name=supporter_id,json=supporterId,proto3" json:"supporter_id,omitempty"`
+	SupporterEmail      string  `protobuf:"bytes,17,opt,name=supporter_email,json=supporterEmail,proto3" json:"supporter_email,omitempty"`
+	CurrentPeriodEnd    int64   `protobuf:"varint,18,opt,name=current_period_end,json=currentPeriodEnd,proto3" json:"current_period_end,omitempty"`
+	SupporterFeedback   string  `protobuf:"bytes,19,opt,name=supporter_feedback,json=supporterFeedback,proto3" json:"supporter_feedback,omitempty"`
+	CancelAtPeriodEnd   string  `protobuf:"bytes,20,opt,name=cancel_at_period_end,json=cancelAtPeriodEnd,proto3" json:"cancel_at_period_end,omitempty"`
+	CurrentPeriodStart  int64   `protobuf:"varint,21,opt,name=current_period_start,json=currentPeriodStart,proto3" json:"current_period_start,omitempty"`
+}
+
+func (x *UpdateMembershipRequest_Data) Reset() {
+	*x = UpdateMembershipRequest_Data{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_management_api_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateMembershipRequest_Data) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMembershipRequest_Data) ProtoMessage() {}
+
+func (x *UpdateMembershipRequest_Data) ProtoReflect() protoreflect.Message {
+	mi := &file_user_management_api_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMembershipRequest_Data.ProtoReflect.Descriptor instead.
+func (*UpdateMembershipRequest_Data) Descriptor() ([]byte, []int) {
+	return file_user_management_api_proto_rawDescGZIP(), []int{4, 0}
+}
+
+func (x *UpdateMembershipRequest_Data) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UpdateMembershipRequest_Data) GetAmount() float64 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
+func (x *UpdateMembershipRequest_Data) GetObject() string {
+	if x != nil {
+		return x.Object
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetPaused() string {
+	if x != nil {
+		return x.Paused
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetCanceled() string {
+	if x != nil {
+		return x.Canceled
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetPspId() string {
+	if x != nil {
+		return x.PspId
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetMembershipLevelId() string {
+	if x != nil {
+		return x.MembershipLevelId
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetMembershipLevelName() string {
+	if x != nil {
+		return x.MembershipLevelName
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetStartedAt() int64 {
+	if x != nil {
+		return x.StartedAt
+	}
+	return 0
+}
+
+func (x *UpdateMembershipRequest_Data) GetCanceledAt() int64 {
+	if x != nil {
+		return x.CanceledAt
+	}
+	return 0
+}
+
+func (x *UpdateMembershipRequest_Data) GetNoteHidden() bool {
+	if x != nil {
+		return x.NoteHidden
+	}
+	return false
+}
+
+func (x *UpdateMembershipRequest_Data) GetSupportNote() string {
+	if x != nil {
+		return x.SupportNote
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetSupporterName() string {
+	if x != nil {
+		return x.SupporterName
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetSupporterId() int64 {
+	if x != nil {
+		return x.SupporterId
+	}
+	return 0
+}
+
+func (x *UpdateMembershipRequest_Data) GetSupporterEmail() string {
+	if x != nil {
+		return x.SupporterEmail
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetCurrentPeriodEnd() int64 {
+	if x != nil {
+		return x.CurrentPeriodEnd
+	}
+	return 0
+}
+
+func (x *UpdateMembershipRequest_Data) GetSupporterFeedback() string {
+	if x != nil {
+		return x.SupporterFeedback
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetCancelAtPeriodEnd() string {
+	if x != nil {
+		return x.CancelAtPeriodEnd
+	}
+	return ""
+}
+
+func (x *UpdateMembershipRequest_Data) GetCurrentPeriodStart() int64 {
+	if x != nil {
+		return x.CurrentPeriodStart
+	}
+	return 0
 }
 
 var File_user_management_api_proto protoreflect.FileDescriptor
@@ -615,10 +956,73 @@ var file_user_management_api_proto_rawDesc = []byte{
 	0x5f, 0x65, 0x78, 0x69, 0x73, 0x74, 0x73, 0x42, 0x17, 0x0a, 0x15, 0x5f, 0x69, 0x73, 0x5f, 0x6d,
 	0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x5f, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65,
 	0x42, 0x09, 0x0a, 0x07, 0x5f, 0x70, 0x61, 0x75, 0x73, 0x65, 0x64, 0x42, 0x0b, 0x0a, 0x09, 0x5f,
-	0x63, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x65, 0x64, 0x42, 0x26, 0x5a, 0x24, 0x67, 0x69, 0x74, 0x68,
-	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x4f, 0x70, 0x74, 0x69, 0x50, 0x69, 0x65, 0x2f, 0x75,
-	0x73, 0x65, 0x72, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x61, 0x70, 0x69,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x63, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x65, 0x64, 0x22, 0xaf, 0x07, 0x0a, 0x17, 0x55, 0x70, 0x64,
+	0x61, 0x74, 0x65, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x6c, 0x69, 0x76, 0x65,
+	0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x6c, 0x69, 0x76,
+	0x65, 0x4d, 0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x74, 0x74, 0x65, 0x6d, 0x70, 0x74,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x61, 0x74, 0x74, 0x65, 0x6d, 0x70, 0x74, 0x12,
+	0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x12, 0x19, 0x0a, 0x08, 0x65, 0x76, 0x65,
+	0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x07, 0x65, 0x76, 0x65,
+	0x6e, 0x74, 0x49, 0x64, 0x12, 0x31, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x06, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x65, 0x6d, 0x62, 0x65,
+	0x72, 0x73, 0x68, 0x69, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x44, 0x61, 0x74,
+	0x61, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x1a, 0xe0, 0x05, 0x0a, 0x04, 0x44, 0x61, 0x74, 0x61,
+	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64,
+	0x12, 0x16, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x01,
+	0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x62, 0x6a, 0x65,
+	0x63, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x12, 0x16, 0x0a, 0x06, 0x70, 0x61, 0x75, 0x73, 0x65, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x06, 0x70, 0x61, 0x75, 0x73, 0x65, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74,
+	0x75, 0x73, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73,
+	0x12, 0x1a, 0x0a, 0x08, 0x63, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x65, 0x64, 0x18, 0x06, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x08, 0x63, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x65, 0x64, 0x12, 0x1a, 0x0a, 0x08,
+	0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08,
+	0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x12, 0x15, 0x0a, 0x06, 0x70, 0x73, 0x70, 0x5f,
+	0x69, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x70, 0x73, 0x70, 0x49, 0x64, 0x12,
+	0x2e, 0x0a, 0x13, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x5f, 0x6c, 0x65,
+	0x76, 0x65, 0x6c, 0x5f, 0x69, 0x64, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x11, 0x6d, 0x65,
+	0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x49, 0x64, 0x12,
+	0x32, 0x0a, 0x15, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x5f, 0x6c, 0x65,
+	0x76, 0x65, 0x6c, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52, 0x13,
+	0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x4e,
+	0x61, 0x6d, 0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x65, 0x64, 0x5f, 0x61,
+	0x74, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x65, 0x64,
+	0x41, 0x74, 0x12, 0x1f, 0x0a, 0x0b, 0x63, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x65, 0x64, 0x5f, 0x61,
+	0x74, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x63, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x65,
+	0x64, 0x41, 0x74, 0x12, 0x1f, 0x0a, 0x0b, 0x6e, 0x6f, 0x74, 0x65, 0x5f, 0x68, 0x69, 0x64, 0x64,
+	0x65, 0x6e, 0x18, 0x0d, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0a, 0x6e, 0x6f, 0x74, 0x65, 0x48, 0x69,
+	0x64, 0x64, 0x65, 0x6e, 0x12, 0x21, 0x0a, 0x0c, 0x73, 0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x5f,
+	0x6e, 0x6f, 0x74, 0x65, 0x18, 0x0e, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x73, 0x75, 0x70, 0x70,
+	0x6f, 0x72, 0x74, 0x4e, 0x6f, 0x74, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x73, 0x75, 0x70, 0x70, 0x6f,
+	0x72, 0x74, 0x65, 0x72, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0d, 0x73, 0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x21,
+	0x0a, 0x0c, 0x73, 0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x10,
+	0x20, 0x01, 0x28, 0x03, 0x52, 0x0b, 0x73, 0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x65, 0x72, 0x49,
+	0x64, 0x12, 0x27, 0x0a, 0x0f, 0x73, 0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x65, 0x72, 0x5f, 0x65,
+	0x6d, 0x61, 0x69, 0x6c, 0x18, 0x11, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x73, 0x75, 0x70, 0x70,
+	0x6f, 0x72, 0x74, 0x65, 0x72, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x12, 0x2c, 0x0a, 0x12, 0x63, 0x75,
+	0x72, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x70, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x5f, 0x65, 0x6e, 0x64,
+	0x18, 0x12, 0x20, 0x01, 0x28, 0x03, 0x52, 0x10, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x50,
+	0x65, 0x72, 0x69, 0x6f, 0x64, 0x45, 0x6e, 0x64, 0x12, 0x2d, 0x0a, 0x12, 0x73, 0x75, 0x70, 0x70,
+	0x6f, 0x72, 0x74, 0x65, 0x72, 0x5f, 0x66, 0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x18, 0x13,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x11, 0x73, 0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x65, 0x72, 0x46,
+	0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x12, 0x2f, 0x0a, 0x14, 0x63, 0x61, 0x6e, 0x63, 0x65,
+	0x6c, 0x5f, 0x61, 0x74, 0x5f, 0x70, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x5f, 0x65, 0x6e, 0x64, 0x18,
+	0x14, 0x20, 0x01, 0x28, 0x09, 0x52, 0x11, 0x63, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x41, 0x74, 0x50,
+	0x65, 0x72, 0x69, 0x6f, 0x64, 0x45, 0x6e, 0x64, 0x12, 0x30, 0x0a, 0x14, 0x63, 0x75, 0x72, 0x72,
+	0x65, 0x6e, 0x74, 0x5f, 0x70, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x5f, 0x73, 0x74, 0x61, 0x72, 0x74,
+	0x18, 0x15, 0x20, 0x01, 0x28, 0x03, 0x52, 0x12, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x50,
+	0x65, 0x72, 0x69, 0x6f, 0x64, 0x53, 0x74, 0x61, 0x72, 0x74, 0x22, 0x3b, 0x0a, 0x18, 0x55, 0x70,
+	0x64, 0x61, 0x74, 0x65, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73,
+	0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0a, 0x73, 0x74, 0x61,
+	0x74, 0x75, 0x73, 0x43, 0x6f, 0x64, 0x65, 0x42, 0x26, 0x5a, 0x24, 0x67, 0x69, 0x74, 0x68, 0x75,
+	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x4f, 0x70, 0x74, 0x69, 0x50, 0x69, 0x65, 0x2f, 0x75, 0x73,
+	0x65, 0x72, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x61, 0x70, 0x69, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -633,23 +1037,27 @@ func file_user_management_api_proto_rawDescGZIP() []byte {
 	return file_user_management_api_proto_rawDescData
 }
 
-var file_user_management_api_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_user_management_api_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_user_management_api_proto_goTypes = []interface{}{
 	(*CreateMembershipRequest)(nil),      // 0: CreateMembershipRequest
 	(*CreateMembershipResponse)(nil),     // 1: CreateMembershipResponse
 	(*GetMembershipRequest)(nil),         // 2: GetMembershipRequest
 	(*GetMembershipResponse)(nil),        // 3: GetMembershipResponse
-	(*CreateMembershipRequest_Data)(nil), // 4: CreateMembershipRequest.Data
-	(*GetMembershipResponse_Data)(nil),   // 5: GetMembershipResponse.Data
+	(*UpdateMembershipRequest)(nil),      // 4: UpdateMembershipRequest
+	(*UpdateMembershipResponse)(nil),     // 5: UpdateMembershipResponse
+	(*CreateMembershipRequest_Data)(nil), // 6: CreateMembershipRequest.Data
+	(*GetMembershipResponse_Data)(nil),   // 7: GetMembershipResponse.Data
+	(*UpdateMembershipRequest_Data)(nil), // 8: UpdateMembershipRequest.Data
 }
 var file_user_management_api_proto_depIdxs = []int32{
-	4, // 0: CreateMembershipRequest.data:type_name -> CreateMembershipRequest.Data
-	5, // 1: GetMembershipResponse.data:type_name -> GetMembershipResponse.Data
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	6, // 0: CreateMembershipRequest.data:type_name -> CreateMembershipRequest.Data
+	7, // 1: GetMembershipResponse.data:type_name -> GetMembershipResponse.Data
+	8, // 2: UpdateMembershipRequest.data:type_name -> UpdateMembershipRequest.Data
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_user_management_api_proto_init() }
@@ -707,7 +1115,7 @@ func file_user_management_api_proto_init() {
 			}
 		}
 		file_user_management_api_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateMembershipRequest_Data); i {
+			switch v := v.(*UpdateMembershipRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -719,6 +1127,30 @@ func file_user_management_api_proto_init() {
 			}
 		}
 		file_user_management_api_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateMembershipResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_management_api_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateMembershipRequest_Data); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_management_api_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetMembershipResponse_Data); i {
 			case 0:
 				return &v.state
@@ -730,15 +1162,27 @@ func file_user_management_api_proto_init() {
 				return nil
 			}
 		}
+		file_user_management_api_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateMembershipRequest_Data); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
-	file_user_management_api_proto_msgTypes[5].OneofWrappers = []interface{}{}
+	file_user_management_api_proto_msgTypes[7].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_user_management_api_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

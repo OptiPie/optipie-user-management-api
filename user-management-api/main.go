@@ -69,6 +69,12 @@ func main() {
 		Repository: repository,
 	})
 
+	handlerUpdateMembership, err := handlers.NewUpdateMembership(handlers.NewUpdateMembershipArgs{
+		Logger:     logger,
+		Config:     appConfig,
+		Repository: repository,
+	})
+
 	if err != nil {
 		log.Fatalf("error on NewGetMembership, %v", err)
 	}
@@ -79,6 +85,7 @@ func main() {
 			Config:                  appConfig,
 			CreateMembershipHandler: handlerCreateMembership,
 			GetMembershipHandler:    handlerGetMembership,
+			UpdateMembershipHandler: handlerUpdateMembership,
 		})
 
 	// API routes
@@ -91,7 +98,7 @@ func main() {
 			}
 			r.Route("/user/membership", func(r chi.Router) {
 				r.Post("/create", implementation.CreateMembership)
-				r.Post("/update", nil)
+				r.Post("/update", implementation.UpdateMembership)
 				r.Post("/delete", nil)
 				r.Route("/{email}", func(r chi.Router) {
 					r.Get("/", implementation.GetMembership)
