@@ -53,7 +53,7 @@ func main() {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(time.Millisecond * time.Duration(appConfig.App.Timeout)))
 
-	// construct handlers
+	// handlers
 	handlerCreateMembership, err := handlers.NewCreateMembership(handlers.NewCreateMembershipArgs{
 		Logger:     logger,
 		Config:     appConfig,
@@ -68,15 +68,26 @@ func main() {
 		Config:     appConfig,
 		Repository: repository,
 	})
+	if err != nil {
+		log.Fatalf("error on NewGetMembership, %v", err)
+	}
 
 	handlerUpdateMembership, err := handlers.NewUpdateMembership(handlers.NewUpdateMembershipArgs{
 		Logger:     logger,
 		Config:     appConfig,
 		Repository: repository,
 	})
-
 	if err != nil {
-		log.Fatalf("error on NewGetMembership, %v", err)
+		log.Fatalf("error on NewUpdateMembership, %v", err)
+	}
+
+	handlerDeleteMembership, err := handlers.NewDeleteMembership(handlers.NewDeleteMembershipArgs{
+		Logger:     logger,
+		Config:     appConfig,
+		Repository: repository,
+	})
+	if err != nil {
+		log.Fatalf("error on NewDeleteMembership, %v", err)
 	}
 
 	implementation, err := usermanagementapi.NewUserManagementAPI(
@@ -86,25 +97,30 @@ func main() {
 			CreateMembershipHandler: handlerCreateMembership,
 			GetMembershipHandler:    handlerGetMembership,
 			UpdateMembershipHandler: handlerUpdateMembership,
+			DeleteMembershipHandler: handlerDeleteMembership,
 		})
+
+	if err != nil {
+		log.Fatalf("error on NewUserManagementAPI, %v", err)
+	}
 
 	// API routes
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Get(usermanagementapi.HealthEndpoint, usermanagementapi.Health)
-		r.Group(func(r chi.Router) {
-			// add custom middlewares to handlers
-			for _, mw := range middlewares {
-				r.Use(mw)
-			}
-			r.Route("/user/membership", func(r chi.Router) {
+		r.Route("/user/membership", func(r chi.Router) {
+			r.Group(func(r chi.Router) {
+				// add custom middlewares to webhook handlers
+				for _, mw := range middlewares {
+					r.Use(mw)
+				}
 				r.Post("/create", implementation.CreateMembership)
 				r.Post("/update", implementation.UpdateMembership)
-				r.Post("/delete", nil)
-				r.Route("/{email}", func(r chi.Router) {
-					r.Get("/", implementation.GetMembership)
-				})
+				r.Post("/delete", implementation.DeleteMembership)
 			})
-
+			// GET doesn't require any auth or custom mw logic
+			r.Route("/{email}", func(r chi.Router) {
+				r.Get("/", implementation.GetMembership)
+			})
 		})
 	})
 

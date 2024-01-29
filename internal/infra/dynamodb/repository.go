@@ -2,7 +2,9 @@ package dynamorepo
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"github.com/OptiPie/optipie-user-management-api/internal/app/cerrors"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain/models"
 	dbmodels "github.com/OptiPie/optipie-user-management-api/internal/infra/dynamodb/models"
@@ -19,6 +21,7 @@ const (
 
 	// dynamodb condition expressions
 	attributeNotExists = "attribute_not_exists"
+	attributeExists    = "attribute_exists"
 
 	// table names
 	tableNameMembership = "membership"
@@ -128,7 +131,7 @@ func (c *Client) GetMembershipByEmail(ctx context.Context, email string) (models
 }
 
 func (c *Client) UpdateMembershipByEmail(ctx context.Context, email string, args domain.UpdateMembershipArgs) error {
-	update := expression.Set(expression.Name("updated"), expression.Value(time.Now()))
+	update := expression.Set(expression.Name("updated"), expression.Value(time.Now().UTC()))
 	update.Set(expression.Name("paused"), expression.Value(args.Paused))
 	update.Set(expression.Name("status"), expression.Value(args.Status))
 	update.Set(expression.Name("canceled"), expression.Value(args.Canceled))
@@ -158,17 +161,47 @@ func (c *Client) UpdateMembershipByEmail(ctx context.Context, email string, args
 		return fmt.Errorf("membership get primary key error: %v", err)
 	}
 
+	conditionExpression := fmt.Sprintf("%v(%v)", attributeExists, membershipPrimaryKey)
+
 	_, err = c.client.UpdateItem(ctx, &dynamodb.UpdateItemInput{
 		TableName:                 aws.String(tableNameMembership),
 		Key:                       membershipPk,
 		ExpressionAttributeNames:  expr.Names(),
 		ExpressionAttributeValues: expr.Values(),
+		ConditionExpression:       aws.String(conditionExpression),
 		UpdateExpression:          expr.Update(),
 		ReturnValues:              types.ReturnValueNone,
 	})
 
 	if err != nil {
-		return fmt.Errorf("update membership updated item error: %v", err)
+		return fmt.Errorf("update membership error: %v", err)
+	}
+
+	return nil
+}
+
+func (c *Client) DeleteMembershipByEmail(ctx context.Context, email string) error {
+	membership := dbmodels.Membership{Email: email}
+	membershipPk, err := membership.GetPrimaryKey()
+	if err != nil {
+		return fmt.Errorf("membership get primary key error: %v", err)
+	}
+
+	conditionExpression := fmt.Sprintf("%v(%v)", attributeExists, membershipPrimaryKey)
+
+	_, err = c.client.DeleteItem(ctx, &dynamodb.DeleteItemInput{
+		TableName:           aws.String(tableNameMembership),
+		Key:                 membershipPk,
+		ConditionExpression: aws.String(conditionExpression),
+	})
+
+	if err != nil {
+		var ccf *types.ConditionalCheckFailedException
+		if errors.As(err, &ccf) {
+			return cerrors.NewCustomError(err.Error(), cerrors.ConditionalCheckFailedException)
+
+		}
+		return fmt.Errorf("delete membership error: %v", err)
 	}
 
 	return nil

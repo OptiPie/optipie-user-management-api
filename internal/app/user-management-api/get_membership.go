@@ -35,12 +35,17 @@ func (i *Implementation) GetMembership(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !membershipResponse.IsMembershipExists {
+		response.StatusCode = http.StatusNotFound
+		render.Render(w, r, response)
+		return
+	}
+
 	responseData := &desc.GetMembershipResponse_Data{
-		Email:              &membershipResponse.Email,
-		IsMembershipExists: &membershipResponse.IsMembershipExists,
-		IsMembershipActive: &membershipResponse.IsMembershipActive,
-		Paused:             membershipResponse.Paused,
-		Canceled:           membershipResponse.Canceled,
+		Email:                &membershipResponse.Email,
+		IsMembershipActive:   &membershipResponse.IsMembershipActive,
+		IsMembershipPaused:   membershipResponse.IsMembershipPaused,
+		IsMembershipCanceled: membershipResponse.IsMembershipCanceled,
 	}
 
 	response.Data = responseData

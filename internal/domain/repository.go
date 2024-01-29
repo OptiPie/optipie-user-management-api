@@ -10,6 +10,7 @@ type Repository interface {
 	CreateMembership(ctx context.Context, args CreateMembershipArgs) error
 	GetMembershipByEmail(ctx context.Context, email string) (models.Membership, error)
 	UpdateMembershipByEmail(ctx context.Context, email string, args UpdateMembershipArgs) error
+	DeleteMembershipByEmail(ctx context.Context, email string) error
 }
 
 // CreateMembershipArgs to call CreateMembership repository method
@@ -58,4 +59,15 @@ type UpdateMembershipArgs struct {
 	SupporterFeedback   string
 	CancelAtPeriodEnd   string
 	CurrentPeriodStart  time.Time
+}
+
+// DeleteMembershipArgs in case of soft deletion needed, this will be used
+type DeleteMembershipArgs struct {
+	updated            time.Time
+	Status             string
+	Canceled           string
+	CanceledAt         time.Time
+	CurrentPeriodEnd   time.Time
+	SupporterFeedback  string
+	CurrentPeriodStart time.Time
 }

@@ -13,6 +13,7 @@ type Implementation struct {
 	createMembershipHandler handlers.CreateMembershipHandler
 	getMembershipHandler    handlers.GetMembershipHandler
 	updateMembershipHandler handlers.UpdateMembershipHandler
+	deleteMembershipHandler handlers.DeleteMembershipHandler
 }
 
 func NewUserManagementAPI(args NewUserManagementAPIArgs) (*Implementation, error) {
@@ -31,12 +32,16 @@ func NewUserManagementAPI(args NewUserManagementAPIArgs) (*Implementation, error
 	if args.UpdateMembershipHandler == nil {
 		return nil, fmt.Errorf("updateMembershipHandler is required")
 	}
+	if args.DeleteMembershipHandler == nil {
+		return nil, fmt.Errorf("deleteMembershipHandler is required")
+	}
 	return &Implementation{
 		logger:                  args.Logger,
 		config:                  args.Config,
 		createMembershipHandler: args.CreateMembershipHandler,
 		getMembershipHandler:    args.GetMembershipHandler,
 		updateMembershipHandler: args.UpdateMembershipHandler,
+		deleteMembershipHandler: args.DeleteMembershipHandler,
 	}, nil
 }
 
@@ -46,4 +51,5 @@ type NewUserManagementAPIArgs struct {
 	CreateMembershipHandler handlers.CreateMembershipHandler
 	GetMembershipHandler    handlers.GetMembershipHandler
 	UpdateMembershipHandler handlers.UpdateMembershipHandler
+	DeleteMembershipHandler handlers.DeleteMembershipHandler
 }

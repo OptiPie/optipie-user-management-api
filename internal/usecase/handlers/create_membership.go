@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
@@ -27,6 +26,9 @@ func NewCreateMembership(args NewCreateMembershipArgs) (*CreateMembership, error
 	}
 	if args.Logger == nil {
 		return nil, fmt.Errorf("logger is required")
+	}
+	if args.Repository == nil {
+		return nil, fmt.Errorf("repository is required")
 	}
 	return &CreateMembership{
 		logger:     args.Logger,
@@ -73,7 +75,6 @@ type CreateMemberShipRequest struct {
 func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemberShipRequest) error {
 	logger := h.logger
 	repository := h.repository
-	errorResponse := errors.New("")
 
 	logger.Info("request at handler level", "request", request)
 
@@ -105,7 +106,7 @@ func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemb
 	})
 	if err != nil {
 		logger.Error("error on repository.create_membership", "request", request, "err", err)
-		return errorResponse
+		return err
 	}
 
 	return nil

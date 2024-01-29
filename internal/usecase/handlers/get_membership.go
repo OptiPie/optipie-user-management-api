@@ -33,6 +33,9 @@ func NewGetMembership(args NewGetMembershipArgs) (*GetMembership, error) {
 	if args.Logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
+	if args.Repository == nil {
+		return nil, fmt.Errorf("repository is required")
+	}
 	return &GetMembership{
 		logger:     args.Logger,
 		config:     args.Config,
@@ -53,11 +56,11 @@ type GetMembershipRequest struct {
 }
 
 type GetMembershipResponse struct {
-	Email              string
-	IsMembershipExists bool
-	IsMembershipActive bool
-	Paused             *bool
-	Canceled           *bool
+	Email                string
+	IsMembershipExists   bool
+	IsMembershipActive   bool
+	IsMembershipPaused   *bool
+	IsMembershipCanceled *bool
 }
 
 func (h *GetMembership) HandleRequest(ctx context.Context, request GetMembershipRequest) (*GetMembershipResponse, error) {
@@ -88,20 +91,20 @@ func (h *GetMembership) HandleRequest(ctx context.Context, request GetMembership
 	if time.Now().After(membership.CurrentPeriodEnd) || membership.Status != membershipStatusActive {
 		logger.Warn("membership is not active", "membership", membership)
 		return &GetMembershipResponse{
-			Email:              membership.SupporterEmail,
-			IsMembershipExists: true,
-			IsMembershipActive: false,
-			Paused:             &paused,
-			Canceled:           &canceled,
+			Email:                membership.SupporterEmail,
+			IsMembershipExists:   true,
+			IsMembershipActive:   false,
+			IsMembershipPaused:   &paused,
+			IsMembershipCanceled: &canceled,
 		}, nil
 	}
 
 	response := &GetMembershipResponse{
-		Email:              membership.SupporterEmail,
-		IsMembershipExists: true,
-		IsMembershipActive: true,
-		Paused:             &paused,
-		Canceled:           &canceled,
+		Email:                membership.SupporterEmail,
+		IsMembershipExists:   true,
+		IsMembershipActive:   true,
+		IsMembershipPaused:   &paused,
+		IsMembershipCanceled: &canceled,
 	}
 
 	return response, nil

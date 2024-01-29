@@ -27,6 +27,9 @@ func NewUpdateMembership(args NewUpdateMembershipArgs) (*UpdateMembership, error
 	if args.Logger == nil {
 		return nil, fmt.Errorf("logger is required")
 	}
+	if args.Repository == nil {
+		return nil, fmt.Errorf("repository is required")
+	}
 	return &UpdateMembership{
 		logger:     args.Logger,
 		config:     args.Config,

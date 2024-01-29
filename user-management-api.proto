@@ -47,10 +47,9 @@ message GetMembershipResponse{
 
     message Data {
         optional string email = 1;
-        optional bool is_membership_exists = 2;
         optional bool is_membership_active = 3;
-        optional bool paused = 4;
-        optional bool canceled = 5;
+        optional bool is_membership_paused = 4;
+        optional bool is_membership_canceled = 5;
     }
 }
 
@@ -88,5 +87,41 @@ message UpdateMembershipRequest{
 }
 
 message UpdateMembershipResponse{
+    int32 status_code = 1;
+}
+
+message DeleteMembershipRequest{
+    string type = 1;
+    bool live_mode = 2;
+    int32 attempt = 3;
+    int64 created = 4;
+    int64 event_id = 5;
+    Data data = 6;
+
+    message Data {
+        int64 id = 1;
+        double amount = 2;
+        string object = 3;
+        string paused = 4;
+        string status = 5;
+        string canceled = 6;
+        string currency = 7;
+        string psp_id = 8;
+        string membership_level_id = 9;
+        string membership_level_name = 10;
+        int64 started_at = 11;
+        int64 canceled_at = 12;
+        bool note_hidden = 13;
+        string support_note = 14;
+        string supporter_name = 15;
+        int64 supporter_id = 16;
+        string supporter_email = 17;
+        int64 current_period_end = 18;
+        string supporter_feedback = 19;
+        int64 current_period_start = 20;
+    }
+}
+
+message DeleteMembershipResponse{
     int32 status_code = 1;
 }
