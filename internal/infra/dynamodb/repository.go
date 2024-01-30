@@ -22,18 +22,17 @@ const (
 	// dynamodb condition expressions
 	attributeNotExists = "attribute_not_exists"
 	attributeExists    = "attribute_exists"
-
-	// table names
-	tableNameMembership = "membership"
 )
 
 type Client struct {
-	client *dynamodb.Client
+	client              *dynamodb.Client
+	membershipTableName string
 }
 
-func NewRepository(client *dynamodb.Client) domain.Repository {
+func NewRepository(client *dynamodb.Client, membershipTableName string) domain.Repository {
 	return &Client{
-		client: client,
+		client:              client,
+		membershipTableName: membershipTableName,
 	}
 }
 
@@ -73,7 +72,7 @@ func (c *Client) CreateMembership(ctx context.Context, args domain.CreateMembers
 	conditionExpression := fmt.Sprintf("%v(%v)", attributeNotExists, membershipPrimaryKey)
 
 	_, err = c.client.PutItem(ctx, &dynamodb.PutItemInput{
-		TableName: aws.String(tableNameMembership), Item: item,
+		TableName: aws.String(c.membershipTableName), Item: item,
 		ConditionExpression: aws.String(conditionExpression),
 	})
 	if err != nil {
@@ -90,7 +89,7 @@ func (c *Client) GetMembershipByEmail(ctx context.Context, email string) (models
 		return models.Membership{}, fmt.Errorf("membership get primary key error: %v", err)
 	}
 	response, err := c.client.GetItem(ctx, &dynamodb.GetItemInput{
-		Key: membershipPk, TableName: aws.String(tableNameMembership),
+		Key: membershipPk, TableName: aws.String(c.membershipTableName),
 	})
 
 	if err != nil {
@@ -164,7 +163,7 @@ func (c *Client) UpdateMembershipByEmail(ctx context.Context, email string, args
 	conditionExpression := fmt.Sprintf("%v(%v)", attributeExists, membershipPrimaryKey)
 
 	_, err = c.client.UpdateItem(ctx, &dynamodb.UpdateItemInput{
-		TableName:                 aws.String(tableNameMembership),
+		TableName:                 aws.String(c.membershipTableName),
 		Key:                       membershipPk,
 		ExpressionAttributeNames:  expr.Names(),
 		ExpressionAttributeValues: expr.Values(),
@@ -190,7 +189,7 @@ func (c *Client) DeleteMembershipByEmail(ctx context.Context, email string) erro
 	conditionExpression := fmt.Sprintf("%v(%v)", attributeExists, membershipPrimaryKey)
 
 	_, err = c.client.DeleteItem(ctx, &dynamodb.DeleteItemInput{
-		TableName:           aws.String(tableNameMembership),
+		TableName:           aws.String(c.membershipTableName),
 		Key:                 membershipPk,
 		ConditionExpression: aws.String(conditionExpression),
 	})

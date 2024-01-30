@@ -3,3 +3,7 @@ app:
   environment: staging
   is_local_development: true
   timeout: 2000 #ms
+aws:
+  dynamodb:
+    membership:
+      table_name: membership

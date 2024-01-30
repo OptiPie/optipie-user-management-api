@@ -45,7 +45,7 @@ func main() {
 	}
 
 	svc := prepare.Dynamodb(awsCfg)
-	repository := dynamorepo.NewRepository(svc)
+	repository := dynamorepo.NewRepository(svc, appConfig.Aws.Dynamodb.Membership.TableName)
 
 	// middlewares
 	r.Use(middleware.RequestID)
