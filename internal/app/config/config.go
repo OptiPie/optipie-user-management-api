@@ -12,7 +12,9 @@ const (
 	configName = "spec"
 
 	// Env variable keys
-	configPathEnvKey = "SPEC_FILE_PATH"
+	configPathEnvKey      = "SPEC_FILE_PATH"
+	appEnvironment        = "APP_ENVIRONMENT"
+	appIsLocalDevelopment = "APP_IS_LOCAL_DEVELOPMENT"
 )
 
 type Config struct {
@@ -20,7 +22,7 @@ type Config struct {
 		Name               string `mapstructure:"name" validate:"required"`
 		Environment        string `mapstructure:"environment" validate:"required"`
 		Timeout            int    `mapstructure:"timeout" validate:"required"`
-		IsLocalDevelopment bool   `mapstructure:"is_local_development" validate:"required"`
+		IsLocalDevelopment bool   `mapstructure:"is_local_development"`
 	} `mapstructure:"app" validate:"required"`
 }
 
@@ -43,6 +45,21 @@ func GetConfig() (*Config, error) {
 	err = viper.Unmarshal(config)
 	if err != nil {
 		return nil, fmt.Errorf("unable to decode into config struct, %v", err)
+	}
+
+	// override config with env variables for deployments
+	appEnv, present := os.LookupEnv(appEnvironment)
+
+	if appEnv != "" && present {
+		config.App.Environment = appEnv
+	}
+
+	_, present = os.LookupEnv(appIsLocalDevelopment)
+
+	if present {
+		if !viper.GetBool(appIsLocalDevelopment) {
+			config.App.IsLocalDevelopment = false
+		}
 	}
 
 	validate := validator.New()
