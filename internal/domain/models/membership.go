@@ -17,7 +17,7 @@ type Membership struct {
 	Canceled            string
 	Currency            string
 	PspId               string
-	MembershipLevelId   string
+	MembershipLevelId   int64
 	MembershipLevelName string
 	StartedAt           time.Time
 	CanceledAt          time.Time

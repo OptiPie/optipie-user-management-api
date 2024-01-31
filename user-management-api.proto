@@ -19,7 +19,7 @@ message CreateMembershipRequest {
         string canceled = 6;
         string currency = 7;
         string psp_id = 8;
-        string membership_level_id = 9;
+        int64 membership_level_id = 9;
         string membership_level_name = 10;
         int64 started_at = 11;
         int64 canceled_at = 12;
@@ -70,7 +70,7 @@ message UpdateMembershipRequest{
         string canceled = 6;
         string currency = 7;
         string psp_id = 8;
-        string membership_level_id = 9;
+        int64 membership_level_id = 9;
         string membership_level_name = 10;
         int64 started_at = 11;
         int64 canceled_at = 12;
@@ -107,7 +107,7 @@ message DeleteMembershipRequest{
         string canceled = 6;
         string currency = 7;
         string psp_id = 8;
-        string membership_level_id = 9;
+        int64 membership_level_id = 9;
         string membership_level_name = 10;
         int64 started_at = 11;
         int64 canceled_at = 12;

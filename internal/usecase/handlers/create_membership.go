@@ -59,7 +59,7 @@ type CreateMemberShipRequest struct {
 	Canceled            string
 	Currency            string
 	PspId               string
-	MembershipLevelId   string
+	MembershipLevelId   int64
 	MembershipLevelName string
 	StartedAt           int64
 	CanceledAt          int64

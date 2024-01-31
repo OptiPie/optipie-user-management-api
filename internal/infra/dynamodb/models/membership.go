@@ -22,7 +22,7 @@ type Membership struct {
 	Canceled            string    `dynamodbav:"canceled"`
 	Currency            string    `dynamodbav:"currency,omitempty"`
 	PspId               string    `dynamodbav:"psp_id,omitempty"`
-	MembershipLevelId   string    `dynamodbav:"membership_level_id"`
+	MembershipLevelId   int64     `dynamodbav:"membership_level_id"`
 	MembershipLevelName string    `dynamodbav:"membership_level_name"`
 	StartedAt           time.Time `dynamodbav:"started_at"`
 	CanceledAt          time.Time `dynamodbav:"canceled_at,omitempty"`

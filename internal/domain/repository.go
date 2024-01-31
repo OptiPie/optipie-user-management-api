@@ -28,7 +28,7 @@ type CreateMembershipArgs struct {
 	Canceled            string
 	Currency            string
 	PspId               string
-	MembershipLevelId   string
+	MembershipLevelId   int64
 	MembershipLevelName string
 	StartedAt           time.Time
 	CanceledAt          time.Time
@@ -48,7 +48,7 @@ type UpdateMembershipArgs struct {
 	Canceled            string
 	Currency            string
 	PspId               string
-	MembershipLevelId   string
+	MembershipLevelId   int64
 	MembershipLevelName string
 	StartedAt           time.Time
 	CanceledAt          time.Time
