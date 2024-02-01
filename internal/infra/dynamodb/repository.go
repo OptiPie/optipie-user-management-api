@@ -67,7 +67,7 @@ func (c *Client) CreateMembership(ctx context.Context, args domain.CreateMembers
 
 	item, err := attributevalue.MarshalMap(membership)
 	if err != nil {
-		return fmt.Errorf("create membership marshall error: %v", err)
+		return fmt.Errorf("marshall_map error: %v", err)
 	}
 	conditionExpression := fmt.Sprintf("%v(%v)", attributeNotExists, membershipPrimaryKey)
 

@@ -109,7 +109,7 @@ func main() {
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Get(usermanagementapi.HealthEndpoint, usermanagementapi.Health)
 		r.Route("/user/membership", func(r chi.Router) {
-			// rate limit by IP
+			// rate limit by IP, 100 requests per minute
 			r.Use(httprate.LimitByIP(100, 1*time.Minute))
 			r.Group(func(r chi.Router) {
 				// add custom middlewares to webhook handlers
