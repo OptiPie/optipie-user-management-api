@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	appresponse "github.com/OptiPie/optipie-user-management-api/internal/app/response"
 	"github.com/OptiPie/optipie-user-management-api/internal/infra/requestdata"
 	desc "github.com/OptiPie/optipie-user-management-api/pkg/user-management-api"
@@ -81,10 +83,10 @@ func Auth(args AuthArgs) Middleware {
 			mac.Write(requestBody)
 			expectedMAC := mac.Sum(nil)
 
-			//hmacHex := hex.EncodeToString(expectedMAC)
-			//fmt.Printf("%v,%v", hmacHex)
+			hmacHex := hex.EncodeToString(expectedMAC)
+			fmt.Printf("%v,%v", hmacHex)
 
-			isMACValid := hmac.Equal(requestBodyMAC, expectedMAC)
+			isMACValid := hmac.Equal(requestBodyMAC, []byte(hmacHex))
 
 			slog.Info("isMACValid", "", isMACValid)
 			slog.Info("auth middleware compare request body signatures", "expectedMAC", expectedMAC, "requestBodyMAC", requestBodyMAC)
