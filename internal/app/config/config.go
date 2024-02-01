@@ -12,10 +12,13 @@ const (
 	configName = "spec"
 
 	// Env variable keys
-	configPathEnvKey            = "SPEC_FILE_PATH"
-	appEnvironment              = "APP_ENVIRONMENT"
-	appIsLocalDevelopment       = "APP_IS_LOCAL_DEVELOPMENT"
-	dynamodbTableNameMembership = "DYNAMODB_TABLE_NAME_MEMBERSHIP"
+	configPathEnvKey              = "SPEC_FILE_PATH"
+	appEnvironment                = "APP_ENVIRONMENT"
+	appIsLocalDevelopment         = "APP_IS_LOCAL_DEVELOPMENT"
+	dynamodbTableNameMembership   = "DYNAMODB_TABLE_NAME_MEMBERSHIP"
+	webhookKeyMembershipStarted   = "WEB_HOOK_KEY_MEMBERSHIP_STARTED"
+	webhookKeyMembershipUpdated   = "WEB_HOOK_KEY_MEMBERSHIP_UPDATED"
+	webhookKeyMembershipCancelled = "WEB_HOOK_KEY_MEMBERSHIP_CANCELLED"
 )
 
 type Config struct {
@@ -24,6 +27,11 @@ type Config struct {
 		Environment        string `mapstructure:"environment" validate:"required"`
 		Timeout            int    `mapstructure:"timeout" validate:"required"`
 		IsLocalDevelopment bool   `mapstructure:"is_local_development"`
+		WebHookKeys        struct {
+			MembershipStarted   string `mapstructure:"membership_started" validate:"required"`
+			MembershipUpdated   string `mapstructure:"membership_updated" validate:"required"`
+			MembershipCancelled string `mapstructure:"membership_cancelled" validate:"required"`
+		} `mapstructure:"web_hook_keys" validate:"required"`
 	} `mapstructure:"app" validate:"required"`
 	Aws struct {
 		Dynamodb struct {
@@ -55,29 +63,10 @@ func GetConfig() (*Config, error) {
 		return nil, fmt.Errorf("unable to decode into config struct, %v", err)
 	}
 
-	// override config with env variables for deployments
-	appEnv, present := os.LookupEnv(appEnvironment)
+	err = overrideConfigWithEnvVariables(config)
 
-	if appEnv != "" && present {
-		config.App.Environment = appEnv
-	} else {
-		return nil, fmt.Errorf("critical env variable is missing")
-	}
-
-	_, present = os.LookupEnv(appIsLocalDevelopment)
-
-	if present {
-		if !viper.GetBool(appIsLocalDevelopment) {
-			config.App.IsLocalDevelopment = false
-		}
-	} else {
-		return nil, fmt.Errorf("critical env variable is missing")
-	}
-
-	tableNameMembership := viper.GetString(dynamodbTableNameMembership)
-
-	if tableNameMembership != "" {
-		config.Aws.Dynamodb.Membership.TableName = tableNameMembership
+	if err != nil {
+		return nil, fmt.Errorf("overriedConfigWithEnvVariables error: %v", err)
 	}
 
 	validate := validator.New()
@@ -87,4 +76,57 @@ func GetConfig() (*Config, error) {
 	}
 
 	return config, nil
+}
+
+func overrideConfigWithEnvVariables(config *Config) error {
+	// override config with env variables for deployments
+	appEnv, present := os.LookupEnv(appEnvironment)
+
+	if appEnv != "" && present {
+		config.App.Environment = appEnv
+	} else {
+		return fmt.Errorf("critical env variable is missing")
+	}
+
+	_, present = os.LookupEnv(appIsLocalDevelopment)
+
+	if present {
+		if !viper.GetBool(appIsLocalDevelopment) {
+			config.App.IsLocalDevelopment = false
+		}
+	} else {
+		return fmt.Errorf("critical env variable is missing")
+	}
+
+	membershipStartedSecretKey, present := os.LookupEnv(webhookKeyMembershipStarted)
+
+	if membershipStartedSecretKey != "" && present {
+		config.App.WebHookKeys.MembershipStarted = membershipStartedSecretKey
+	} else {
+		return fmt.Errorf("critical env variable is missing")
+	}
+
+	membershipUpdatedSecretKey, present := os.LookupEnv(webhookKeyMembershipUpdated)
+
+	if membershipUpdatedSecretKey != "" && present {
+		config.App.WebHookKeys.MembershipUpdated = membershipUpdatedSecretKey
+	} else {
+		return fmt.Errorf("critical env variable is missing")
+	}
+
+	membershipCancelledSecretKey, present := os.LookupEnv(webhookKeyMembershipCancelled)
+
+	if membershipCancelledSecretKey != "" && present {
+		config.App.WebHookKeys.MembershipCancelled = membershipCancelledSecretKey
+	} else {
+		return fmt.Errorf("critical env variable is missing")
+	}
+
+	tableNameMembership := viper.GetString(dynamodbTableNameMembership)
+
+	if tableNameMembership != "" {
+		config.Aws.Dynamodb.Membership.TableName = tableNameMembership
+	}
+
+	return nil
 }

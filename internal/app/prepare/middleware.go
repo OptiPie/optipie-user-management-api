@@ -9,7 +9,9 @@ import (
 func Middlewares(config *config.Config) ([]mw.Middleware, error) {
 	var middlewares []mw.Middleware
 	authMiddleware := mw.Auth(mw.AuthArgs{
-		SecretKey: config.App.Name,
+		MembershipStartedSecretKey:   config.App.WebHookKeys.MembershipStarted,
+		MembershipUpdatedSecretKey:   config.App.WebHookKeys.MembershipUpdated,
+		MembershipCancelledSecretKey: config.App.WebHookKeys.MembershipCancelled,
 	})
 
 	middlewares = append(middlewares, authMiddleware)

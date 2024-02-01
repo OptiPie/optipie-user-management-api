@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	headerBMCSignature      = "X-BMC-Signature"
+	headerSignatureSha256   = "X-Signature-Sha256"
 	headerRequestID         = "X-Request-ID"
 	headerOriginalUserAgent = "X-Original-User-Agent"
 	headerUserAgent         = "User-Agent"
@@ -14,7 +14,7 @@ const (
 
 // RequestHeaders stores http request headers.
 type RequestHeaders struct {
-	BMCSignature      string
+	SignatureSha256   string
 	RequestID         string
 	OriginalUserAgent string
 	UserAgent         string
@@ -31,7 +31,7 @@ func GetRequestHeaders(req *http.Request) RequestHeaders {
 	requestID := req.Header.Get(headerRequestID)
 
 	return RequestHeaders{
-		BMCSignature:      req.Header.Get(headerBMCSignature),
+		SignatureSha256:   req.Header.Get(headerSignatureSha256),
 		RequestID:         requestID,
 		OriginalUserAgent: req.Header.Get(headerOriginalUserAgent),
 		UserAgent:         req.UserAgent(),
