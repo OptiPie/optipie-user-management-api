@@ -58,8 +58,6 @@ func Auth(args AuthArgs) Middleware {
 
 			r.Body = io.NopCloser(bytes.NewBuffer(requestBody))
 
-			slog.Info("exact request body is: ", "request_body", requestBody)
-
 			metaData := &MetaData{}
 			err = json.Unmarshal(requestBody, metaData)
 			if err != nil {
@@ -85,8 +83,12 @@ func Auth(args AuthArgs) Middleware {
 
 			isMACValid := hmac.Equal(requestBodyMAC, expectedMACHex)
 
-			slog.Info("isMACValid", "", isMACValid)
-			slog.Info("auth middleware compare request body signatures", "expectedMAC", expectedMACHex, "requestBodyMAC", requestBodyMAC)
+			if !isMACValid {
+				slog.Error("signature is not valid", "err", err)
+				response.StatusCode = http.StatusUnauthorized
+				render.Render(w, r, response)
+				return
+			}
 
 			next.ServeHTTP(w, r)
 		})
