@@ -18,9 +18,9 @@ Easily optimize strategies, store optimization reports and make analysis via sim
 
 ### OptiPie User Management API
 
-Aim of this project is to handle [Buymeacoffe][buymeacoffee-url] membership webhooks for upcoming new OptiPie Plus benefits!
+Aim of this project is to handle [Buy me a coffe][buymeacoffee-url] membership webhooks for upcoming new OptiPie Plus benefits!
 
-Still under development and tests.
+Still under development and tests on Digital Ocean App Platform. 
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
