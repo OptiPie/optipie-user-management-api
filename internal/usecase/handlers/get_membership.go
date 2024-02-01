@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
@@ -50,7 +49,7 @@ type GetMembership struct {
 	repository domain.Repository
 }
 
-// GetMembershipRequest represents necessary GET /api/v1/user/membership request data for handler.
+// GetMembershipRequest represents necessary GET /api/v1/user/membership/{email} request data for handler.
 type GetMembershipRequest struct {
 	Email string
 }
@@ -66,13 +65,12 @@ type GetMembershipResponse struct {
 func (h *GetMembership) HandleRequest(ctx context.Context, request GetMembershipRequest) (*GetMembershipResponse, error) {
 	logger := h.logger
 	repository := h.repository
-	errorResponse := errors.New("")
 
 	membership, err := repository.GetMembershipByEmail(ctx, request.Email)
 
 	if err != nil {
 		logger.Error("error on repository.get_membership_by_email", "request", request, "err", err)
-		return nil, errorResponse
+		return nil, err
 	}
 
 	// meaning membership entity for email doesn't exist

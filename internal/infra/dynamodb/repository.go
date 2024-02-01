@@ -76,7 +76,7 @@ func (c *Client) CreateMembership(ctx context.Context, args domain.CreateMembers
 		ConditionExpression: aws.String(conditionExpression),
 	})
 	if err != nil {
-		return fmt.Errorf("create membership put item error: %v", err)
+		return fmt.Errorf("put_item error: %v", err)
 	}
 
 	return nil
@@ -86,19 +86,19 @@ func (c *Client) GetMembershipByEmail(ctx context.Context, email string) (models
 	membership := dbmodels.Membership{Email: email}
 	membershipPk, err := membership.GetPrimaryKey()
 	if err != nil {
-		return models.Membership{}, fmt.Errorf("membership get primary key error: %v", err)
+		return models.Membership{}, fmt.Errorf("get_primary_key error: %v", err)
 	}
 	response, err := c.client.GetItem(ctx, &dynamodb.GetItemInput{
 		Key: membershipPk, TableName: aws.String(c.membershipTableName),
 	})
 
 	if err != nil {
-		return models.Membership{}, fmt.Errorf("get membership by email error: %v", err)
+		return models.Membership{}, fmt.Errorf("get_item error: %v", err)
 	}
 
 	err = attributevalue.UnmarshalMap(response.Item, &membership)
 	if err != nil {
-		return models.Membership{}, fmt.Errorf("get membership by email unmarshal error: %v", err)
+		return models.Membership{}, fmt.Errorf("unmarshal_map error: %v", err)
 	}
 
 	return models.Membership{
@@ -151,13 +151,13 @@ func (c *Client) UpdateMembershipByEmail(ctx context.Context, email string, args
 	expr, err := expression.NewBuilder().WithUpdate(update).Build()
 
 	if err != nil {
-		return fmt.Errorf("update membership expression builder error: %v", err)
+		return fmt.Errorf("expression_builder error: %v", err)
 	}
 
 	membership := dbmodels.Membership{Email: email}
 	membershipPk, err := membership.GetPrimaryKey()
 	if err != nil {
-		return fmt.Errorf("membership get primary key error: %v", err)
+		return fmt.Errorf("get_primary_key error: %v", err)
 	}
 
 	conditionExpression := fmt.Sprintf("%v(%v)", attributeExists, membershipPrimaryKey)
@@ -173,7 +173,7 @@ func (c *Client) UpdateMembershipByEmail(ctx context.Context, email string, args
 	})
 
 	if err != nil {
-		return fmt.Errorf("update membership error: %v", err)
+		return fmt.Errorf("update_item error: %v", err)
 	}
 
 	return nil
@@ -183,7 +183,7 @@ func (c *Client) DeleteMembershipByEmail(ctx context.Context, email string) erro
 	membership := dbmodels.Membership{Email: email}
 	membershipPk, err := membership.GetPrimaryKey()
 	if err != nil {
-		return fmt.Errorf("membership get primary key error: %v", err)
+		return fmt.Errorf("get_primary_key error: %v", err)
 	}
 
 	conditionExpression := fmt.Sprintf("%v(%v)", attributeExists, membershipPrimaryKey)
@@ -200,7 +200,7 @@ func (c *Client) DeleteMembershipByEmail(ctx context.Context, email string) erro
 			return cerrors.NewCustomError(err.Error(), cerrors.ConditionalCheckFailedException)
 
 		}
-		return fmt.Errorf("delete membership error: %v", err)
+		return fmt.Errorf("delete_item error: %v", err)
 	}
 
 	return nil

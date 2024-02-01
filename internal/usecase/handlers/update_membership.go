@@ -2,14 +2,13 @@ package handlers
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"log/slog"
 )
 
-// UpdateMembershipHandler is an abstraction for MemberShipUpdated use-case handler.
+// UpdateMembershipHandler is an abstraction for MembershipUpdated use-case handler.
 type UpdateMembershipHandler interface {
 	HandleRequest(ctx context.Context, request UpdateMembershipRequest) error
 }
@@ -68,9 +67,6 @@ type UpdateMembershipRequest struct {
 func (h *UpdateMembership) HandleRequest(ctx context.Context, request UpdateMembershipRequest) error {
 	logger := h.logger
 	repository := h.repository
-	errorResponse := errors.New("")
-
-	logger.Info("request at handler level", "request", request)
 
 	err := repository.UpdateMembershipByEmail(ctx, request.SupporterEmail, domain.UpdateMembershipArgs{
 		Paused:              request.Paused,
@@ -91,8 +87,8 @@ func (h *UpdateMembership) HandleRequest(ctx context.Context, request UpdateMemb
 		CurrentPeriodStart:  convertUnixToUTCTime(request.CurrentPeriodStart),
 	})
 	if err != nil {
-		logger.Error("error on repository.update_membership", "request", request, "err", err)
-		return errorResponse
+		logger.Error("error on repository.update_membership_by_email", "request", request, "err", err)
+		return err
 	}
 
 	return nil

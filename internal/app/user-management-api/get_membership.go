@@ -9,6 +9,10 @@ import (
 	"net/http"
 )
 
+const (
+	maxEmailCharacters = 320
+)
+
 func (i *Implementation) GetMembership(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	logger := i.logger
@@ -18,8 +22,8 @@ func (i *Implementation) GetMembership(w http.ResponseWriter, r *http.Request) {
 
 	var email string
 
-	if email = chi.URLParam(r, "email"); email == "" {
-		logger.Error("email can't be empty")
+	if email = chi.URLParam(r, "email"); email == "" || len(email) > maxEmailCharacters {
+		logger.Error("email is wrong", "email", email)
 		response.StatusCode = http.StatusBadRequest
 		render.Render(w, r, response)
 		return

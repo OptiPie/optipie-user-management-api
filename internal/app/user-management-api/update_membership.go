@@ -20,21 +20,13 @@ func (i *Implementation) UpdateMembership(w http.ResponseWriter, r *http.Request
 	request := &apprequest.UpdateMembershipRequest{}
 
 	if err := render.Bind(r, request); err != nil {
-		logger.Error("Error, %v", err)
+		logger.Error("error on binding request", "err", err)
 		response.StatusCode = http.StatusBadRequest
 		render.Render(w, r, response)
 		return
 	}
-	logger.Info("Request is here pal!", request)
 
 	data := request.GetData()
-
-	if data.SupporterEmail == "" {
-		logger.Error("supporter email can't be nil", "request", request)
-		response.StatusCode = http.StatusBadRequest
-		render.Render(w, r, response)
-		return
-	}
 
 	err := i.updateMembershipHandler.HandleRequest(ctx, handlers.UpdateMembershipRequest{
 		Paused:              data.GetPaused(),

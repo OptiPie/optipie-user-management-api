@@ -44,7 +44,7 @@ type CreateMembership struct {
 	repository domain.Repository
 }
 
-// CreateMemberShipRequest represents necessary POST /api/v1/user/membership request data for handler.
+// CreateMemberShipRequest represents necessary POST /api/v1/user/membership/create  request data for handler.
 type CreateMemberShipRequest struct {
 	Type                string
 	LiveMode            bool
@@ -75,8 +75,6 @@ type CreateMemberShipRequest struct {
 func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemberShipRequest) error {
 	logger := h.logger
 	repository := h.repository
-
-	logger.Info("request at handler level", "request", request)
 
 	err := repository.CreateMembership(ctx, domain.CreateMembershipArgs{
 		Type:                request.Type,

@@ -8,7 +8,7 @@ import (
 	"log/slog"
 )
 
-// DeleteMembershipHandler is an abstraction for DeleteMembership use-case handler.
+// DeleteMembershipHandler is an abstraction for MembershipCancelled use-case handler.
 type DeleteMembershipHandler interface {
 	HandleRequest(ctx context.Context, request DeleteMembershipRequest) error
 }

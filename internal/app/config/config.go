@@ -78,8 +78,8 @@ func GetConfig() (*Config, error) {
 	return config, nil
 }
 
+// overrideConfigWithEnvVariables for deployments
 func overrideConfigWithEnvVariables(config *Config) error {
-	// override config with env variables for deployments
 	appEnv, present := os.LookupEnv(appEnvironment)
 
 	if appEnv != "" && present {
