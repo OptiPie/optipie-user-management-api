@@ -14,11 +14,11 @@ Easily optimize strategies, store optimization reports and make analysis via sim
 
 ### Download
 
-[![Download][chrome-store-badge]][chrome-store-url]
+[![Download][chrome-store-badge]][chrome-store-url] 
 
 ### OptiPie User Management API
 
-Aim of this project is to handle [Buy me a coffe][buymeacoffee-url] membership webhooks for upcoming new OptiPie Plus benefits!
+Aim of this project is to handle [Buy me a coffee][buymeacoffee-url] membership webhooks and authentication of the paid users within the app for upcoming new OptiPie Plus benefits!
 
 Still under development and tests on Digital Ocean App Platform. 
 
