@@ -55,11 +55,12 @@ type GetMembershipRequest struct {
 }
 
 type GetMembershipResponse struct {
-	Email                string
-	IsMembershipExists   bool
-	IsMembershipActive   bool
-	IsMembershipPaused   *bool
-	IsMembershipCanceled *bool
+	Email                      string
+	IsMembershipExists         bool
+	IsMembershipActive         bool
+	IsMembershipPaused         *bool
+	IsMembershipCanceled       *bool
+	CurrentMembershipPeriodEnd *int64
 }
 
 func (h *GetMembership) HandleRequest(ctx context.Context, request GetMembershipRequest) (*GetMembershipResponse, error) {
@@ -97,12 +98,15 @@ func (h *GetMembership) HandleRequest(ctx context.Context, request GetMembership
 		}, nil
 	}
 
+	currentPeriodEndTimestamp := membership.CurrentPeriodEnd.Unix()
+
 	response := &GetMembershipResponse{
-		Email:                membership.SupporterEmail,
-		IsMembershipExists:   true,
-		IsMembershipActive:   true,
-		IsMembershipPaused:   &paused,
-		IsMembershipCanceled: &canceled,
+		Email:                      membership.SupporterEmail,
+		IsMembershipExists:         true,
+		IsMembershipActive:         true,
+		IsMembershipPaused:         &paused,
+		IsMembershipCanceled:       &canceled,
+		CurrentMembershipPeriodEnd: &currentPeriodEndTimestamp,
 	}
 
 	return response, nil

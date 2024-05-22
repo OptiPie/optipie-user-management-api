@@ -46,10 +46,11 @@ func (i *Implementation) GetMembership(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseData := &desc.GetMembershipResponse_Data{
-		Email:                &membershipResponse.Email,
-		IsMembershipActive:   &membershipResponse.IsMembershipActive,
-		IsMembershipPaused:   membershipResponse.IsMembershipPaused,
-		IsMembershipCanceled: membershipResponse.IsMembershipCanceled,
+		Email:                      &membershipResponse.Email,
+		IsMembershipActive:         &membershipResponse.IsMembershipActive,
+		IsMembershipPaused:         membershipResponse.IsMembershipPaused,
+		IsMembershipCanceled:       membershipResponse.IsMembershipCanceled,
+		CurrentMembershipPeriodEnd: membershipResponse.CurrentMembershipPeriodEnd,
 	}
 
 	response.Data = responseData
