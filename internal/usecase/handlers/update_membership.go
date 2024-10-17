@@ -6,6 +6,7 @@ import (
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"log/slog"
+	"time"
 )
 
 // UpdateMembershipHandler is an abstraction for MembershipUpdated use-case handler.
@@ -68,6 +69,9 @@ func (h *UpdateMembership) HandleRequest(ctx context.Context, request UpdateMemb
 	logger := h.logger
 	repository := h.repository
 
+	// Avoid data race between create and update handlers due to buymeacoffee
+	time.Sleep(time.Millisecond * 500)
+
 	err := repository.UpdateMembershipByEmail(ctx, request.SupporterEmail, domain.UpdateMembershipArgs{
 		Paused:              request.Paused,
 		Status:              request.Status,
@@ -87,7 +91,7 @@ func (h *UpdateMembership) HandleRequest(ctx context.Context, request UpdateMemb
 		CurrentPeriodStart:  convertUnixToUTCTime(request.CurrentPeriodStart),
 	})
 	if err != nil {
-		logger.Error("error on repository.update_membership_by_email", "request", request, "err", err)
+		logger.Error("error on repository.update_membership_by_email", "request", request, "email", request.SupporterEmail, "err", err)
 		return err
 	}
 

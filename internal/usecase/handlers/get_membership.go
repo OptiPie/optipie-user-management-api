@@ -88,7 +88,7 @@ func (h *GetMembership) HandleRequest(ctx context.Context, request GetMembership
 
 	// check if membership is valid
 	if time.Now().After(membership.CurrentPeriodEnd) || membership.Status != membershipStatusActive {
-		logger.Warn("membership is not active", "membership", membership)
+		logger.Warn("membership is not active", "membership", membership, "email", membership.SupporterEmail)
 		return &GetMembershipResponse{
 			Email:                membership.SupporterEmail,
 			IsMembershipExists:   true,

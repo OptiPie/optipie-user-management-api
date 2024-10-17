@@ -2,7 +2,7 @@ app:
   name: optipie-user-management-api
   environment: staging
   is_local_development: true
-  timeout: 2000 #ms
+  timeout: 3000 #ms
   web_hook_keys:
     membership_started: xxx
     membership_updated: xxx

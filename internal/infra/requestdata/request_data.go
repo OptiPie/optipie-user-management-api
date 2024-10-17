@@ -1,7 +1,6 @@
 package requestdata
 
 import (
-	"log/slog"
 	"net/http"
 )
 
@@ -25,8 +24,6 @@ func GetRequestHeaders(req *http.Request) RequestHeaders {
 	if req == nil {
 		return RequestHeaders{}
 	}
-
-	slog.Info("All headers are : ", "RequestHeaders", req.Header)
 
 	requestID := req.Header.Get(headerRequestID)
 
