@@ -6,6 +6,7 @@ import (
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"log/slog"
+	"strings"
 	"time"
 )
 
@@ -72,7 +73,8 @@ func (h *UpdateMembership) HandleRequest(ctx context.Context, request UpdateMemb
 	// Avoid data race between create and update handlers due to buymeacoffee
 	time.Sleep(time.Millisecond * 500)
 
-	err := repository.UpdateMembershipByEmail(ctx, request.SupporterEmail, domain.UpdateMembershipArgs{
+	email := strings.ToLower(request.SupporterEmail)
+	err := repository.UpdateMembershipByEmail(ctx, email, domain.UpdateMembershipArgs{
 		Paused:              request.Paused,
 		Status:              request.Status,
 		Canceled:            request.Canceled,

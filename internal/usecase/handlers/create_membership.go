@@ -6,6 +6,7 @@ import (
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"log/slog"
+	"strings"
 	"time"
 )
 
@@ -76,6 +77,7 @@ func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemb
 	logger := h.logger
 	repository := h.repository
 
+	email := strings.ToLower(request.SupporterEmail)
 	err := repository.CreateMembership(ctx, domain.CreateMembershipArgs{
 		Type:                request.Type,
 		LiveMode:            request.LiveMode,
@@ -98,7 +100,7 @@ func (h *CreateMembership) HandleRequest(ctx context.Context, request CreateMemb
 		SupportNote:         request.SupportNote,
 		SupporterName:       request.SupporterName,
 		SupporterId:         request.SupporterId,
-		SupporterEmail:      request.SupporterEmail,
+		SupporterEmail:      email,
 		CurrentPeriodEnd:    convertUnixToUTCTime(request.CurrentPeriodEnd),
 		CurrentPeriodStart:  convertUnixToUTCTime(request.CurrentPeriodStart),
 	})

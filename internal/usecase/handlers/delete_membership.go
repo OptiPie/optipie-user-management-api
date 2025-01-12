@@ -6,6 +6,7 @@ import (
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"log/slog"
+	"strings"
 )
 
 // DeleteMembershipHandler is an abstraction for MembershipCancelled use-case handler.
@@ -52,7 +53,8 @@ func (h *DeleteMembership) HandleRequest(ctx context.Context, request DeleteMemb
 	logger := h.logger
 	repository := h.repository
 
-	err := repository.DeleteMembershipByEmail(ctx, request.Email)
+	email := strings.ToLower(request.Email)
+	err := repository.DeleteMembershipByEmail(ctx, email)
 
 	if err != nil {
 		logger.Error("error on repository.delete_membership_by_email", "request", request, "err", err)
