@@ -3,11 +3,13 @@ package handlers
 import (
 	"context"
 	"fmt"
-	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
-	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 	"log/slog"
 	"strconv"
+	"strings"
 	"time"
+
+	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
+	"github.com/OptiPie/optipie-user-management-api/internal/domain"
 )
 
 const (
@@ -66,8 +68,10 @@ type GetMembershipResponse struct {
 func (h *GetMembership) HandleRequest(ctx context.Context, request GetMembershipRequest) (*GetMembershipResponse, error) {
 	logger := h.logger
 	repository := h.repository
+		
+	email := strings.ToLower(request.Email)
 
-	membership, err := repository.GetMembershipByEmail(ctx, request.Email)
+	membership, err := repository.GetMembershipByEmail(ctx, email)
 
 	if err != nil {
 		logger.Error("error on repository.get_membership_by_email", "request", request, "err", err)
