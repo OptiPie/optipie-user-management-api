@@ -18,6 +18,7 @@ import (
 
 const (
 	membershipPrimaryKey = "email"
+	analyticsPrimaryKey  = "timestamp"
 
 	// dynamodb condition expressions
 	attributeNotExists = "attribute_not_exists"
@@ -27,12 +28,14 @@ const (
 type Client struct {
 	client              *dynamodb.Client
 	membershipTableName string
+	analyticsTableName  string
 }
 
-func NewRepository(client *dynamodb.Client, membershipTableName string) domain.Repository {
+func NewRepository(client *dynamodb.Client, membershipTableName, analyticsTableName string) domain.Repository {
 	return &Client{
 		client:              client,
 		membershipTableName: membershipTableName,
+		analyticsTableName:  analyticsTableName,
 	}
 }
 
@@ -201,6 +204,30 @@ func (c *Client) DeleteMembershipByEmail(ctx context.Context, email string) erro
 
 		}
 		return fmt.Errorf("delete_item error: %v", err)
+	}
+
+	return nil
+}
+
+func (c *Client) CreateAnalytics(ctx context.Context, args domain.CreateAnalyticsArgs) error {
+	analytics := dbmodels.Analytics{
+		Timestamp:      args.Timestamp,
+		StrategyName:   args.StrategyName,
+		StrategySymbol: args.StrategySymbol,
+		StrategyPeriod: args.StrategyPeriod,
+	}
+
+	item, err := attributevalue.MarshalMap(analytics)
+	if err != nil {
+		return fmt.Errorf("marshall_map error: %v", err)
+	}
+
+	_, err = c.client.PutItem(ctx, &dynamodb.PutItemInput{
+		TableName: aws.String(c.analyticsTableName),
+		Item:      item,
+	})
+	if err != nil {
+		return fmt.Errorf("put_item error: %v", err)
 	}
 
 	return nil

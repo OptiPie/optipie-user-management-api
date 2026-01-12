@@ -16,9 +16,11 @@ const (
 	appEnvironment                = "APP_ENVIRONMENT"
 	appIsLocalDevelopment         = "APP_IS_LOCAL_DEVELOPMENT"
 	dynamodbTableNameMembership   = "DYNAMODB_TABLE_NAME_MEMBERSHIP"
+	dynamodbTableNameAnalytics    = "DYNAMODB_TABLE_NAME_ANALYTICS"
 	webhookKeyMembershipStarted   = "WEB_HOOK_KEY_MEMBERSHIP_STARTED"
 	webhookKeyMembershipUpdated   = "WEB_HOOK_KEY_MEMBERSHIP_UPDATED"
 	webhookKeyMembershipCancelled = "WEB_HOOK_KEY_MEMBERSHIP_CANCELLED"
+	googleOAuthClientID           = "GOOGLE_OAUTH_CLIENT_ID"
 )
 
 type Config struct {
@@ -32,12 +34,16 @@ type Config struct {
 			MembershipUpdated   string `mapstructure:"membership_updated" validate:"required"`
 			MembershipCancelled string `mapstructure:"membership_cancelled" validate:"required"`
 		} `mapstructure:"web_hook_keys" validate:"required"`
+		GoogleOAuthClientID string `mapstructure:"google_oauth_client_id" validate:"required"`
 	} `mapstructure:"app" validate:"required"`
 	Aws struct {
 		Dynamodb struct {
 			Membership struct {
 				TableName string `mapstructure:"table_name" validate:"required"`
 			} `mapstructure:"membership" validate:"required"`
+			Analytics struct {
+				TableName string `mapstructure:"table_name" validate:"required"`
+			} `mapstructure:"analytics" validate:"required"`
 		} `mapstructure:"dynamodb" validate:"required"`
 	} `mapstructure:"aws" validate:"required"`
 }
@@ -126,6 +132,20 @@ func overrideConfigWithEnvVariables(config *Config) error {
 
 	if tableNameMembership != "" {
 		config.Aws.Dynamodb.Membership.TableName = tableNameMembership
+	}
+
+	tableNameAnalytics := viper.GetString(dynamodbTableNameAnalytics)
+
+	if tableNameAnalytics != "" {
+		config.Aws.Dynamodb.Analytics.TableName = tableNameAnalytics
+	}
+
+	googleClientID, present := os.LookupEnv(googleOAuthClientID)
+
+	if googleClientID != "" && present {
+		config.App.GoogleOAuthClientID = googleClientID
+	} else {
+		return fmt.Errorf("critical env variable is missing")
 	}
 
 	return nil

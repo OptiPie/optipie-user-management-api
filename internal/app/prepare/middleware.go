@@ -17,3 +17,10 @@ func Middlewares(config *config.Config) ([]mw.Middleware, error) {
 	middlewares = append(middlewares, authMiddleware)
 	return middlewares, nil
 }
+
+// JWTMiddleware prepares the JWT authentication middleware.
+func JWTMiddleware(config *config.Config) mw.Middleware {
+	return mw.JWTAuth(mw.JWTAuthArgs{
+		GoogleClientID: config.App.GoogleOAuthClientID,
+	})
+}
