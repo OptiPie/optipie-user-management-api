@@ -2,6 +2,10 @@ package main
 
 import (
 	"context"
+	"log"
+	"net/http"
+	"time"
+
 	"github.com/OptiPie/optipie-user-management-api/internal/app/config"
 	"github.com/OptiPie/optipie-user-management-api/internal/app/prepare"
 	usermanagementapi "github.com/OptiPie/optipie-user-management-api/internal/app/user-management-api"
@@ -11,9 +15,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/httprate"
-	"log"
-	"net/http"
-	"time"
 )
 
 func main() {
@@ -33,6 +34,8 @@ func main() {
 		log.Fatalf("error on preparing middlewares %v", err)
 	}
 
+	googleOAuthMiddleware := prepare.GoogleOAuthMiddleware(appConfig)
+
 	var awsCfg aws.Config
 	if appConfig.App.IsLocalDevelopment {
 		logger.Warn("Warning, local development environment!")
@@ -46,7 +49,7 @@ func main() {
 	}
 
 	svc := prepare.Dynamodb(awsCfg)
-	repository := dynamorepo.NewRepository(svc, appConfig.Aws.Dynamodb.Membership.TableName)
+	repository := dynamorepo.NewRepository(svc, appConfig.Aws.Dynamodb.Membership.TableName, appConfig.Aws.Dynamodb.Analytics.TableName)
 
 	// middlewares
 	r.Use(middleware.RequestID)
@@ -91,6 +94,15 @@ func main() {
 		log.Fatalf("error on NewDeleteMembership, %v", err)
 	}
 
+	handlerCollectAnalytics, err := handlers.NewCollectAnalytics(handlers.NewCollectAnalyticsArgs{
+		Logger:     logger,
+		Config:     appConfig,
+		Repository: repository,
+	})
+	if err != nil {
+		log.Fatalf("error on NewCollectAnalytics, %v", err)
+	}
+
 	implementation, err := usermanagementapi.NewUserManagementAPI(
 		usermanagementapi.NewUserManagementAPIArgs{
 			Logger:                  logger,
@@ -99,6 +111,7 @@ func main() {
 			GetMembershipHandler:    handlerGetMembership,
 			UpdateMembershipHandler: handlerUpdateMembership,
 			DeleteMembershipHandler: handlerDeleteMembership,
+			CollectAnalyticsHandler: handlerCollectAnalytics,
 		})
 
 	if err != nil {
@@ -124,6 +137,12 @@ func main() {
 			r.Route("/{email}", func(r chi.Router) {
 				r.Get("/", implementation.GetMembership)
 			})
+		})
+		r.Route("/analytics", func(r chi.Router) {
+			// rate limit by IP, 100 requests per minute
+			r.Use(httprate.LimitByIP(100, 1*time.Minute))
+			r.Use(googleOAuthMiddleware)
+			r.Post("/collect", implementation.CollectAnalytics)
 		})
 	})
 

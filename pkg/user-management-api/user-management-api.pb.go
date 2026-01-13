@@ -524,6 +524,116 @@ func (x *DeleteMembershipResponse) GetStatusCode() int32 {
 	return 0
 }
 
+type CollectAnalyticsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	StrategyName   string `protobuf:"bytes,1,opt,name=strategy_name,json=strategyName,proto3" json:"strategy_name,omitempty"`
+	StrategySymbol string `protobuf:"bytes,2,opt,name=strategy_symbol,json=strategySymbol,proto3" json:"strategy_symbol,omitempty"`
+	StrategyPeriod string `protobuf:"bytes,3,opt,name=strategy_period,json=strategyPeriod,proto3" json:"strategy_period,omitempty"`
+}
+
+func (x *CollectAnalyticsRequest) Reset() {
+	*x = CollectAnalyticsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_management_api_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CollectAnalyticsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CollectAnalyticsRequest) ProtoMessage() {}
+
+func (x *CollectAnalyticsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_management_api_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CollectAnalyticsRequest.ProtoReflect.Descriptor instead.
+func (*CollectAnalyticsRequest) Descriptor() ([]byte, []int) {
+	return file_user_management_api_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *CollectAnalyticsRequest) GetStrategyName() string {
+	if x != nil {
+		return x.StrategyName
+	}
+	return ""
+}
+
+func (x *CollectAnalyticsRequest) GetStrategySymbol() string {
+	if x != nil {
+		return x.StrategySymbol
+	}
+	return ""
+}
+
+func (x *CollectAnalyticsRequest) GetStrategyPeriod() string {
+	if x != nil {
+		return x.StrategyPeriod
+	}
+	return ""
+}
+
+type CollectAnalyticsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	StatusCode int32 `protobuf:"varint,1,opt,name=status_code,json=statusCode,proto3" json:"status_code,omitempty"`
+}
+
+func (x *CollectAnalyticsResponse) Reset() {
+	*x = CollectAnalyticsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_management_api_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CollectAnalyticsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CollectAnalyticsResponse) ProtoMessage() {}
+
+func (x *CollectAnalyticsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_management_api_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CollectAnalyticsResponse.ProtoReflect.Descriptor instead.
+func (*CollectAnalyticsResponse) Descriptor() ([]byte, []int) {
+	return file_user_management_api_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *CollectAnalyticsResponse) GetStatusCode() int32 {
+	if x != nil {
+		return x.StatusCode
+	}
+	return 0
+}
+
 type CreateMembershipRequest_Data struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -553,7 +663,7 @@ type CreateMembershipRequest_Data struct {
 func (x *CreateMembershipRequest_Data) Reset() {
 	*x = CreateMembershipRequest_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_user_management_api_proto_msgTypes[8]
+		mi := &file_user_management_api_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -566,7 +676,7 @@ func (x *CreateMembershipRequest_Data) String() string {
 func (*CreateMembershipRequest_Data) ProtoMessage() {}
 
 func (x *CreateMembershipRequest_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_user_management_api_proto_msgTypes[8]
+	mi := &file_user_management_api_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -730,7 +840,7 @@ type GetMembershipResponse_Data struct {
 func (x *GetMembershipResponse_Data) Reset() {
 	*x = GetMembershipResponse_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_user_management_api_proto_msgTypes[9]
+		mi := &file_user_management_api_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -743,7 +853,7 @@ func (x *GetMembershipResponse_Data) String() string {
 func (*GetMembershipResponse_Data) ProtoMessage() {}
 
 func (x *GetMembershipResponse_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_user_management_api_proto_msgTypes[9]
+	mi := &file_user_management_api_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -825,7 +935,7 @@ type UpdateMembershipRequest_Data struct {
 func (x *UpdateMembershipRequest_Data) Reset() {
 	*x = UpdateMembershipRequest_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_user_management_api_proto_msgTypes[10]
+		mi := &file_user_management_api_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -838,7 +948,7 @@ func (x *UpdateMembershipRequest_Data) String() string {
 func (*UpdateMembershipRequest_Data) ProtoMessage() {}
 
 func (x *UpdateMembershipRequest_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_user_management_api_proto_msgTypes[10]
+	mi := &file_user_management_api_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1031,7 +1141,7 @@ type DeleteMembershipRequest_Data struct {
 func (x *DeleteMembershipRequest_Data) Reset() {
 	*x = DeleteMembershipRequest_Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_user_management_api_proto_msgTypes[11]
+		mi := &file_user_management_api_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1044,7 +1154,7 @@ func (x *DeleteMembershipRequest_Data) String() string {
 func (*DeleteMembershipRequest_Data) ProtoMessage() {}
 
 func (x *DeleteMembershipRequest_Data) ProtoReflect() protoreflect.Message {
-	mi := &file_user_management_api_proto_msgTypes[11]
+	mi := &file_user_management_api_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1418,6 +1528,19 @@ var file_user_management_api_proto_rawDesc = []byte{
 	0x72, 0x74, 0x22, 0x3b, 0x0a, 0x18, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x4d, 0x65, 0x6d, 0x62,
 	0x65, 0x72, 0x73, 0x68, 0x69, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1f,
 	0x0a, 0x0b, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x0a, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f, 0x64, 0x65, 0x22,
+	0x90, 0x01, 0x0a, 0x17, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x41, 0x6e, 0x61, 0x6c, 0x79,
+	0x74, 0x69, 0x63, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x73,
+	0x74, 0x72, 0x61, 0x74, 0x65, 0x67, 0x79, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0c, 0x73, 0x74, 0x72, 0x61, 0x74, 0x65, 0x67, 0x79, 0x4e, 0x61, 0x6d, 0x65,
+	0x12, 0x27, 0x0a, 0x0f, 0x73, 0x74, 0x72, 0x61, 0x74, 0x65, 0x67, 0x79, 0x5f, 0x73, 0x79, 0x6d,
+	0x62, 0x6f, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x73, 0x74, 0x72, 0x61, 0x74,
+	0x65, 0x67, 0x79, 0x53, 0x79, 0x6d, 0x62, 0x6f, 0x6c, 0x12, 0x27, 0x0a, 0x0f, 0x73, 0x74, 0x72,
+	0x61, 0x74, 0x65, 0x67, 0x79, 0x5f, 0x70, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0e, 0x73, 0x74, 0x72, 0x61, 0x74, 0x65, 0x67, 0x79, 0x50, 0x65, 0x72, 0x69,
+	0x6f, 0x64, 0x22, 0x3b, 0x0a, 0x18, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x41, 0x6e, 0x61,
+	0x6c, 0x79, 0x74, 0x69, 0x63, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1f,
+	0x0a, 0x0b, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x05, 0x52, 0x0a, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f, 0x64, 0x65, 0x42,
 	0x26, 0x5a, 0x24, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x4f, 0x70,
 	0x74, 0x69, 0x50, 0x69, 0x65, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65,
@@ -1436,7 +1559,7 @@ func file_user_management_api_proto_rawDescGZIP() []byte {
 	return file_user_management_api_proto_rawDescData
 }
 
-var file_user_management_api_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_user_management_api_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_user_management_api_proto_goTypes = []interface{}{
 	(*CreateMembershipRequest)(nil),      // 0: CreateMembershipRequest
 	(*CreateMembershipResponse)(nil),     // 1: CreateMembershipResponse
@@ -1446,16 +1569,18 @@ var file_user_management_api_proto_goTypes = []interface{}{
 	(*UpdateMembershipResponse)(nil),     // 5: UpdateMembershipResponse
 	(*DeleteMembershipRequest)(nil),      // 6: DeleteMembershipRequest
 	(*DeleteMembershipResponse)(nil),     // 7: DeleteMembershipResponse
-	(*CreateMembershipRequest_Data)(nil), // 8: CreateMembershipRequest.Data
-	(*GetMembershipResponse_Data)(nil),   // 9: GetMembershipResponse.Data
-	(*UpdateMembershipRequest_Data)(nil), // 10: UpdateMembershipRequest.Data
-	(*DeleteMembershipRequest_Data)(nil), // 11: DeleteMembershipRequest.Data
+	(*CollectAnalyticsRequest)(nil),      // 8: CollectAnalyticsRequest
+	(*CollectAnalyticsResponse)(nil),     // 9: CollectAnalyticsResponse
+	(*CreateMembershipRequest_Data)(nil), // 10: CreateMembershipRequest.Data
+	(*GetMembershipResponse_Data)(nil),   // 11: GetMembershipResponse.Data
+	(*UpdateMembershipRequest_Data)(nil), // 12: UpdateMembershipRequest.Data
+	(*DeleteMembershipRequest_Data)(nil), // 13: DeleteMembershipRequest.Data
 }
 var file_user_management_api_proto_depIdxs = []int32{
-	8,  // 0: CreateMembershipRequest.data:type_name -> CreateMembershipRequest.Data
-	9,  // 1: GetMembershipResponse.data:type_name -> GetMembershipResponse.Data
-	10, // 2: UpdateMembershipRequest.data:type_name -> UpdateMembershipRequest.Data
-	11, // 3: DeleteMembershipRequest.data:type_name -> DeleteMembershipRequest.Data
+	10, // 0: CreateMembershipRequest.data:type_name -> CreateMembershipRequest.Data
+	11, // 1: GetMembershipResponse.data:type_name -> GetMembershipResponse.Data
+	12, // 2: UpdateMembershipRequest.data:type_name -> UpdateMembershipRequest.Data
+	13, // 3: DeleteMembershipRequest.data:type_name -> DeleteMembershipRequest.Data
 	4,  // [4:4] is the sub-list for method output_type
 	4,  // [4:4] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name
@@ -1566,7 +1691,7 @@ func file_user_management_api_proto_init() {
 			}
 		}
 		file_user_management_api_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateMembershipRequest_Data); i {
+			switch v := v.(*CollectAnalyticsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1578,7 +1703,7 @@ func file_user_management_api_proto_init() {
 			}
 		}
 		file_user_management_api_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetMembershipResponse_Data); i {
+			switch v := v.(*CollectAnalyticsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1590,7 +1715,7 @@ func file_user_management_api_proto_init() {
 			}
 		}
 		file_user_management_api_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateMembershipRequest_Data); i {
+			switch v := v.(*CreateMembershipRequest_Data); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1602,6 +1727,30 @@ func file_user_management_api_proto_init() {
 			}
 		}
 		file_user_management_api_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetMembershipResponse_Data); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_management_api_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateMembershipRequest_Data); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_management_api_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteMembershipRequest_Data); i {
 			case 0:
 				return &v.state
@@ -1614,14 +1763,14 @@ func file_user_management_api_proto_init() {
 			}
 		}
 	}
-	file_user_management_api_proto_msgTypes[9].OneofWrappers = []interface{}{}
+	file_user_management_api_proto_msgTypes[11].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_user_management_api_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

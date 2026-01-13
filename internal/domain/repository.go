@@ -11,6 +11,7 @@ type Repository interface {
 	GetMembershipByEmail(ctx context.Context, email string) (models.Membership, error)
 	UpdateMembershipByEmail(ctx context.Context, email string, args UpdateMembershipArgs) error
 	DeleteMembershipByEmail(ctx context.Context, email string) error
+	CreateAnalytics(ctx context.Context, args CreateAnalyticsArgs) error
 }
 
 // CreateMembershipArgs to call CreateMembership repository method
@@ -70,4 +71,12 @@ type DeleteMembershipArgs struct {
 	CurrentPeriodEnd   time.Time
 	SupporterFeedback  string
 	CurrentPeriodStart time.Time
+}
+
+// CreateAnalyticsArgs to call CreateAnalytics repository method
+type CreateAnalyticsArgs struct {
+	Timestamp      int64
+	StrategyName   string
+	StrategySymbol string
+	StrategyPeriod string
 }

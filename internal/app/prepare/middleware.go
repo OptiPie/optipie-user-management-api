@@ -17,3 +17,10 @@ func Middlewares(config *config.Config) ([]mw.Middleware, error) {
 	middlewares = append(middlewares, authMiddleware)
 	return middlewares, nil
 }
+
+// GoogleOAuthMiddleware prepares the Google OAuth authentication middleware.
+func GoogleOAuthMiddleware(config *config.Config) mw.Middleware {
+	return mw.GoogleOAuth(mw.GoogleOAuthArgs{
+		GoogleClientID: config.App.GoogleOAuthClientID,
+	})
+}

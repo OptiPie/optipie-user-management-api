@@ -126,3 +126,13 @@ message DeleteMembershipRequest{
 message DeleteMembershipResponse{
     int32 status_code = 1;
 }
+
+message CollectAnalyticsRequest{
+    string strategy_name = 1;
+    string strategy_symbol = 2;
+    string strategy_period = 3;
+}
+
+message CollectAnalyticsResponse{
+    int32 status_code = 1;
+}

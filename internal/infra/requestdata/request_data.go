@@ -9,6 +9,7 @@ const (
 	headerRequestID         = "X-Request-ID"
 	headerOriginalUserAgent = "X-Original-User-Agent"
 	headerUserAgent         = "User-Agent"
+	headerAuthorization     = "Authorization"
 )
 
 // RequestHeaders stores http request headers.
@@ -17,6 +18,7 @@ type RequestHeaders struct {
 	RequestID         string
 	OriginalUserAgent string
 	UserAgent         string
+	Authorization     string
 }
 
 // GetRequestHeaders is for getting request data from http request headers.
@@ -32,5 +34,6 @@ func GetRequestHeaders(req *http.Request) RequestHeaders {
 		RequestID:         requestID,
 		OriginalUserAgent: req.Header.Get(headerOriginalUserAgent),
 		UserAgent:         req.UserAgent(),
+		Authorization:     req.Header.Get(headerAuthorization),
 	}
 }
