@@ -11,3 +11,5 @@ aws:
   dynamodb:
     membership:
       table_name: membership
+    analytics:
+      table_name: analytics
