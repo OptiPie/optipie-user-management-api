@@ -24,8 +24,8 @@ type userInfoContextKey struct{}
 
 var userInfoCtxKey = userInfoContextKey{}
 
-// JWTAuthArgs contains arguments for JWT authentication middleware.
-type JWTAuthArgs struct {
+// GoogleOAuthArgs contains arguments for Google OAuth authentication middleware.
+type GoogleOAuthArgs struct {
 	GoogleClientID string
 }
 
@@ -41,8 +41,8 @@ type tokenInfoResponse struct {
 	Exp           string `json:"exp"`
 }
 
-// JWTAuth validates Google OAuth access tokens from the Authorization header.
-func JWTAuth(args JWTAuthArgs) Middleware {
+// GoogleOAuth validates Google OAuth access tokens from the Authorization header.
+func GoogleOAuth(args GoogleOAuthArgs) Middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			response := &appresponse.GetMembershipResponse{

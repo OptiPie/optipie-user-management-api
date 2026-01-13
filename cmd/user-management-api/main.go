@@ -34,7 +34,7 @@ func main() {
 		log.Fatalf("error on preparing middlewares %v", err)
 	}
 
-	jwtMiddleware := prepare.JWTMiddleware(appConfig)
+	googleOAuthMiddleware := prepare.GoogleOAuthMiddleware(appConfig)
 
 	var awsCfg aws.Config
 	if appConfig.App.IsLocalDevelopment {
@@ -141,7 +141,7 @@ func main() {
 		r.Route("/analytics", func(r chi.Router) {
 			// rate limit by IP, 100 requests per minute
 			r.Use(httprate.LimitByIP(100, 1*time.Minute))
-			r.Use(jwtMiddleware)
+			r.Use(googleOAuthMiddleware)
 			r.Post("/collect", implementation.CollectAnalytics)
 		})
 	})
