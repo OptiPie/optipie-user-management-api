@@ -2,15 +2,17 @@ package middleware
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
+	"strconv"
 	"strings"
 
 	appresponse "github.com/OptiPie/optipie-user-management-api/internal/app/response"
 	"github.com/OptiPie/optipie-user-management-api/internal/infra/requestdata"
 	desc "github.com/OptiPie/optipie-user-management-api/pkg/user-management-api"
 	"github.com/go-chi/render"
-	"google.golang.org/api/idtoken"
 )
 
 type UserInfo struct {
@@ -27,7 +29,19 @@ type JWTAuthArgs struct {
 	GoogleClientID string
 }
 
-// JWTAuth validates Google OAuth JWT tokens from the Authorization header.
+// tokenInfoResponse represents the response from Google's tokeninfo endpoint
+type tokenInfoResponse struct {
+	Azp           string `json:"azp"`
+	Aud           string `json:"aud"`
+	Sub           string `json:"sub"`
+	Scope         string `json:"scope"`
+	Email         string `json:"email"`
+	EmailVerified string `json:"email_verified"` // "true" or "false" as string
+	ExpiresIn     string `json:"expires_in"`
+	Exp           string `json:"exp"`
+}
+
+// JWTAuth validates Google OAuth access tokens from the Authorization header.
 func JWTAuth(args JWTAuthArgs) Middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -54,28 +68,27 @@ func JWTAuth(args JWTAuthArgs) Middleware {
 				return
 			}
 
-			idToken := parts[1]
+			accessToken := parts[1]
 
-			// Validate the token with Google
-			ctx := context.Background()
-			payload, err := idtoken.Validate(ctx, idToken, args.GoogleClientID)
+			// Validate the access token with Google's tokeninfo endpoint
+			tokenInfo, err := validateAccessToken(accessToken, args.GoogleClientID)
 			if err != nil {
-				slog.Error("invalid JWT token", "err", err)
+				slog.Error("invalid access token", "err", err)
 				response.StatusCode = http.StatusUnauthorized
 				render.Render(w, r, response)
 				return
 			}
 
-			// Extract email from the token payload
-			email, ok := payload.Claims["email"].(string)
-			if !ok {
-				slog.Error("email claim not found in token")
+			// Extract email from the token info
+			email := tokenInfo.Email
+			if email == "" {
+				slog.Error("email not found in token info")
 				response.StatusCode = http.StatusUnauthorized
 				render.Render(w, r, response)
 				return
 			}
 
-			emailVerified, _ := payload.Claims["email_verified"].(bool)
+			emailVerified, _ := strconv.ParseBool(tokenInfo.EmailVerified)
 
 			userInfo := UserInfo{
 				Email:         email,
@@ -83,10 +96,10 @@ func JWTAuth(args JWTAuthArgs) Middleware {
 			}
 
 			// Store user info in request context
-			ctx = context.WithValue(r.Context(), userInfoCtxKey, &userInfo)
+			ctx := context.WithValue(r.Context(), userInfoCtxKey, &userInfo)
 			r = r.WithContext(ctx)
 
-			slog.Info("JWT token validated successfully", "email", userInfo.Email)
+			slog.Info("access token validated successfully", "email", userInfo.Email)
 
 			next.ServeHTTP(w, r)
 		})
@@ -103,4 +116,30 @@ func GetUserInfoFromContext(ctx context.Context) (*UserInfo, bool) {
 		return info, true
 	}
 	return nil, false
+}
+
+// validateAccessToken validates an OAuth access token with Google's tokeninfo endpoint
+func validateAccessToken(accessToken, expectedClientID string) (*tokenInfoResponse, error) {
+	// Call Google's tokeninfo endpoint
+	resp, err := http.Get(fmt.Sprintf("https://oauth2.googleapis.com/tokeninfo?access_token=%s", accessToken))
+	if err != nil {
+		return nil, fmt.Errorf("failed to validate token: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("token validation failed with status: %d", resp.StatusCode)
+	}
+
+	var tokenInfo tokenInfoResponse
+	if err := json.NewDecoder(resp.Body).Decode(&tokenInfo); err != nil {
+		return nil, fmt.Errorf("failed to decode token info: %w", err)
+	}
+
+	// Verify the token was issued for our client ID
+	if tokenInfo.Aud != expectedClientID {
+		return nil, fmt.Errorf("token audience mismatch: expected %s, got %s", expectedClientID, tokenInfo.Aud)
+	}
+
+	return &tokenInfo, nil
 }
