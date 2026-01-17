@@ -75,8 +75,9 @@ type DeleteMembershipArgs struct {
 
 // CreateAnalyticsArgs to call CreateAnalytics repository method
 type CreateAnalyticsArgs struct {
-	Timestamp      int64
-	StrategyName   string
-	StrategySymbol string
-	StrategyPeriod string
+	Timestamp         int64
+	StrategyName      string
+	StrategySymbol    string
+	StrategyPeriod    string
+	StrategyDateRange string
 }

@@ -47,9 +47,10 @@ type CollectAnalytics struct {
 
 // CollectAnalyticsRequest represents necessary POST /api/v1/analytics/collect request data for handler.
 type CollectAnalyticsRequest struct {
-	StrategyName   string
-	StrategySymbol string
-	StrategyPeriod string
+	StrategyName      string
+	StrategySymbol    string
+	StrategyPeriod    string
+	StrategyDateRange string
 }
 
 func (h *CollectAnalytics) HandleRequest(ctx context.Context, request CollectAnalyticsRequest) error {
@@ -59,17 +60,16 @@ func (h *CollectAnalytics) HandleRequest(ctx context.Context, request CollectAna
 	timestamp := time.Now().UTC().UnixNano()
 
 	err := repository.CreateAnalytics(ctx, domain.CreateAnalyticsArgs{
-		Timestamp:      timestamp,
-		StrategyName:   request.StrategyName,
-		StrategySymbol: request.StrategySymbol,
-		StrategyPeriod: request.StrategyPeriod,
+		Timestamp:         timestamp,
+		StrategyName:      request.StrategyName,
+		StrategySymbol:    request.StrategySymbol,
+		StrategyPeriod:    request.StrategyPeriod,
+		StrategyDateRange: request.StrategyDateRange,
 	})
 	if err != nil {
 		logger.Error("error on repository.create_analytics", "request", request, "err", err)
 		return err
 	}
-
-	logger.Info("analytics data collected", "strategy_name", request.StrategyName, "strategy_symbol", request.StrategySymbol)
 
 	return nil
 }

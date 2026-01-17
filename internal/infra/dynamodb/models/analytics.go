@@ -7,10 +7,11 @@ import (
 )
 
 type Analytics struct {
-	Timestamp      int64  `dynamodbav:"timestamp"`
-	StrategyName   string `dynamodbav:"strategy_name"`
-	StrategySymbol string `dynamodbav:"strategy_symbol"`
-	StrategyPeriod string `dynamodbav:"strategy_period"`
+	Timestamp         int64  `dynamodbav:"timestamp"`
+	StrategyName      string `dynamodbav:"strategy_name"`
+	StrategySymbol    string `dynamodbav:"strategy_symbol"`
+	StrategyPeriod    string `dynamodbav:"strategy_period"`
+	StrategyDateRange string `dynamodbav:"strategy_date_range"`
 }
 
 func (a *Analytics) GetKey() map[string]types.AttributeValue {
@@ -26,18 +27,20 @@ func (a *Analytics) GetKey() map[string]types.AttributeValue {
 
 func (a *Analytics) ToDomain() *models.Analytics {
 	return &models.Analytics{
-		Timestamp:      a.Timestamp,
-		StrategyName:   a.StrategyName,
-		StrategySymbol: a.StrategySymbol,
-		StrategyPeriod: a.StrategyPeriod,
+		Timestamp:         a.Timestamp,
+		StrategyName:      a.StrategyName,
+		StrategySymbol:    a.StrategySymbol,
+		StrategyPeriod:    a.StrategyPeriod,
+		StrategyDateRange: a.StrategyDateRange,
 	}
 }
 
 func FromDomain(analytics *models.Analytics) *Analytics {
 	return &Analytics{
-		Timestamp:      analytics.Timestamp,
-		StrategyName:   analytics.StrategyName,
-		StrategySymbol: analytics.StrategySymbol,
-		StrategyPeriod: analytics.StrategyPeriod,
+		Timestamp:         analytics.Timestamp,
+		StrategyName:      analytics.StrategyName,
+		StrategySymbol:    analytics.StrategySymbol,
+		StrategyPeriod:    analytics.StrategyPeriod,
+		StrategyDateRange: analytics.StrategyDateRange,
 	}
 }

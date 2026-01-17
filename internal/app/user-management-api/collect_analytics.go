@@ -27,9 +27,10 @@ func (i *Implementation) CollectAnalytics(w http.ResponseWriter, r *http.Request
 	}
 
 	err := i.collectAnalyticsHandler.HandleRequest(ctx, handlers.CollectAnalyticsRequest{
-		StrategyName:   request.GetStrategyName(),
-		StrategySymbol: request.GetStrategySymbol(),
-		StrategyPeriod: request.GetStrategyPeriod(),
+		StrategyName:      request.GetStrategyName(),
+		StrategySymbol:    request.GetStrategySymbol(),
+		StrategyPeriod:    request.GetStrategyPeriod(),
+		StrategyDateRange: request.GetStrategyDateRange(),
 	})
 
 	if err != nil {

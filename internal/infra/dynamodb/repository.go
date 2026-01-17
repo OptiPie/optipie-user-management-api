@@ -211,10 +211,11 @@ func (c *Client) DeleteMembershipByEmail(ctx context.Context, email string) erro
 
 func (c *Client) CreateAnalytics(ctx context.Context, args domain.CreateAnalyticsArgs) error {
 	analytics := dbmodels.Analytics{
-		Timestamp:      args.Timestamp,
-		StrategyName:   args.StrategyName,
-		StrategySymbol: args.StrategySymbol,
-		StrategyPeriod: args.StrategyPeriod,
+		Timestamp:         args.Timestamp,
+		StrategyName:      args.StrategyName,
+		StrategySymbol:    args.StrategySymbol,
+		StrategyPeriod:    args.StrategyPeriod,
+		StrategyDateRange: args.StrategyDateRange,
 	}
 
 	item, err := attributevalue.MarshalMap(analytics)
